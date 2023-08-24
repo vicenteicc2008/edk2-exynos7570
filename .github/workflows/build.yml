@@ -22,5 +22,5 @@ jobs:
         path: ./workspace/boot.tar
     - uses: actions/upload-artifact@v3
       with:
-        name: Galaxy J4
+        name: Galaxy J4 UEFI
         path: ./workspace/UEFI
