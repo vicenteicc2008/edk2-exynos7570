@@ -20,7 +20,7 @@
 //Write to decon to enable framebuffer writing
 enableDecon:
         mov     x0, 112
-        movk    x0, 0x1486, lsl 16
+        movk    x0, 0x1483, lsl 16
         mov     w1, 4737
         str     w1, [x0]
         nop

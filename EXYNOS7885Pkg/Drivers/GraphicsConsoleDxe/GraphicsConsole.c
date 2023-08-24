@@ -291,7 +291,7 @@ InitializeGraphicsConsoleTextMode (
   ValidCount = 0;
 
   NewModeBuffer[ValidCount].Columns       = 90;
-  NewModeBuffer[ValidCount].Rows          = 80;
+  NewModeBuffer[ValidCount].Rows          = 67;
   NewModeBuffer[ValidCount].GopWidth      = HorizontalResolution;
   NewModeBuffer[ValidCount].GopHeight     = VerticalResolution;
   NewModeBuffer[ValidCount].GopModeNumber = GopModeNumber;
@@ -299,7 +299,7 @@ InitializeGraphicsConsoleTextMode (
   NewModeBuffer[ValidCount].DeltaY        = (VerticalResolution - (NewModeBuffer[ValidCount].Rows * EFI_GLYPH_HEIGHT)) >> 1;
   ValidCount++;
 
-  if ((MaxColumns >= 80) && (MaxRows >= 50)) {
+  if (0 && (MaxColumns >= 80) && (MaxRows >= 50)) {
     NewModeBuffer[ValidCount].Columns = 80;
     NewModeBuffer[ValidCount].Rows    = 50;
     NewModeBuffer[ValidCount].DeltaX  = (HorizontalResolution - (80 * EFI_GLYPH_WIDTH)) >> 1;
