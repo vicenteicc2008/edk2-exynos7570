@@ -179,4 +179,6 @@ SimpleFbDxe screen driver is from imbushuo's [Lumia950XLPkg](https://github.com/
 
 Zhuowei for making edk2-pixel3
 
+sonic011gamer for making edk2-exynos7885
+
 All the people in ``EDKII pain and misery, struggles and disappointment`` on Discord.
