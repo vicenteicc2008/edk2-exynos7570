@@ -48,10 +48,10 @@ VOID Main (IN  UINT64  StartTimeStamp)
   
   // Architecture-specific initialization
   // Enable Floating Point
-  // ArmEnableVFP();
+  ArmEnableVFP();
 
   /* Enable program flow prediction, if supported */
-  // ArmEnableBranchPrediction();
+  ArmEnableBranchPrediction();
 
 void setFBcolor(char* colors) {
     char* base = (char*)0x0ec000000ull;
