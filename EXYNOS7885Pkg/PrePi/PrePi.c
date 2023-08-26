@@ -30,7 +30,7 @@ VOID UartInit(VOID)
 
   DEBUG((EFI_D_INFO, "\nEDK2 on Samsung Galaxy J4 (AArch64)\n"));
   DEBUG(
-      (EFI_D_INFO, "UEFI Firmware version %s built %a %a\n\n",
+      (EFI_D_INFO, "UEFI Firmware (version %s built %a %a)\n\n",
        (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
 }
 
