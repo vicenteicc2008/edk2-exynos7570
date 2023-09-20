@@ -18,9 +18,9 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: Galaxy J4
+        name: Galaxy A30
         path: ./workspace/boot.tar
     - uses: actions/upload-artifact@v3
       with:
-        name: Galaxy J4 UEFI
+        name: Galaxy A30
         path: ./workspace/UEFI
