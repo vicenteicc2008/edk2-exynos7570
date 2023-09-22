@@ -253,11 +253,6 @@
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   #
-  # Soc Drivers
-  #
-  EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
-
-  #
   # Bds
   #
   MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
