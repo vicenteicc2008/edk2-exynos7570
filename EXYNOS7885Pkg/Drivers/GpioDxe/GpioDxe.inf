@@ -1,0 +1,24 @@
+[Defines]
+  INF_VERSION                    = 1.25
+  BASE_NAME                      = GpioDxe
+  FILE_GUID                      = c7ed43ee-9bf0-465e-834a-1266033f2249
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ExynosGpioEntryPoint
+
+[Sources]
+  GpioDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseLib
+  DebugLib
+  IoLib
+  PcdLib
+  UefiLib
+  UefiBootServicesTableLib
+
+[Guids]
