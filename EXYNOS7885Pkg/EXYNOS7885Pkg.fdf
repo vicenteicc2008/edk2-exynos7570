@@ -187,6 +187,11 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   #
+  # Soc Drivers
+  #
+  INF EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
+
+  #
   # UEFI applications
   #
   INF ShellPkg/Application/Shell/Shell.inf
