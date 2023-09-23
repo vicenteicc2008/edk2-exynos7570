@@ -12,7 +12,7 @@ ExynosGpioEntryPoint (
     EFI_STATUS Status;
 
     // Inicializar la biblioteca UEFI para permitir la impresión en pantalla.
-    Status = UefiLibInitialize(ImageHandle, SystemTable);
+    Status = InitializeLib(ImageHandle, SystemTable);
     if (EFI_ERROR(Status)) {
         return Status;
     }
