@@ -16,9 +16,6 @@
   ArmLib
   BaseLib
   DebugLib
-  IoLib
   PcdLib
-  UefiLib
-  UefiBootServicesTableLib
 
 [Guids]
