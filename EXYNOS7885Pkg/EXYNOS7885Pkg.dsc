@@ -73,6 +73,8 @@
   TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
 
+  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
+
   # SimpleFbDxe
   FrameBufferBltLib|EXYNOS7885Pkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
 
