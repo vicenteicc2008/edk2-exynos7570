@@ -13,33 +13,30 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = GpioDxe
-  FILE_GUID                      = E7D9CAE1-6930-46E3-BDF9-0027446E7DF2
-  MODULE_TYPE                    = DXE_DRIVER
+  BASE_NAME                      = ExynosLib
+  FILE_GUID                      = d035f5c2-1b92-4746-9f6c-5ff6202970df
+  MODULE_TYPE                    = UEFI_DRIVER
   VERSION_STRING                 = 1.0
-
-  ENTRY_POINT                    = GpioInitialize
-
+  LIBRARY_CLASS                  = ExynosLib
 
 [Sources.common]
-  Gpio.c
+  ExynosLib.c
 
 [Packages]
   MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
   EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
-  IoLib
-  UefiDriverEntryPoint
-  ExynosLib
   DebugLib
+  IoLib
+
+[Protocols]
 
 [Guids]
 
-[Protocols]
- gSamsungPlatformGpioProtocolGuid
-
 [Pcd]
-
-[depex]
-  TRUE
+  gExynosPkgTokenSpaceGuid.PcdGpioPart1Base
+  gExynosPkgTokenSpaceGuid.PcdGpioPart2Base
+  gExynosPkgTokenSpaceGuid.PcdGpioPart3Base
+  gExynosPkgTokenSpaceGuid.PcdGpioPart4Base

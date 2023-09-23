@@ -37,6 +37,7 @@
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
 [LibraryClasses.common]
+  ExynosLib|EXYNOS7885Pkg/Library/ExynosLib/ExynosLib.inf
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmPlatformLib|EXYNOS7885Pkg/Library/EXYNOS7885PkgLib/EXYNOS7885PkgLib.inf
@@ -144,7 +145,12 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
-  [PcdsDynamicDefault.common]
+  gExynosPkgTokenSpaceGuid.PcdGpioPart1Base|0x139F0000
+  gExynosPkgTokenSpaceGuid.PcdGpioPart2Base|0x148C0000
+  gExynosPkgTokenSpaceGuid.PcdGpioPart3Base|0x139E0000
+  gExynosPkgTokenSpaceGuid.PcdGpioPart4Base|0x13750000
+
+[PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0 # /8 = column
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|0 #/19 = row
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|0
