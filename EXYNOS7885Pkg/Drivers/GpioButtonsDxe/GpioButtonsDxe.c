@@ -48,7 +48,7 @@ PreBootVolumeDownButtonThenPowerButtonCheck(
 
 EFI_STATUS
 EFIAPI
-PreBootClearVolumeButtonState(IN MS_BUTTON_SERVICES_PROTOCOL *This) {
+PreBootClearVolumeButtonState(IN GPIO_BUTTON_SERVICES_PROTOCOL *This) {
   GPIO_BUTTON_SERVICES_PROTOCOL *Bsp;
 
   DEBUG((DEBUG_VERBOSE, "%a \n", __FUNCTION__));
