@@ -72,6 +72,36 @@
 
 #define DISTANCE_BTWN_PORTS	(0x20)
 
+#define GPIO_CON		(0x00)
+#define GPIO_DATAIN		(0x04)
+#define GPIO_PUD		(0x08)
+#define GPIO_DRV		(0x0C)
+
+#define GPIO_DATAIN_MASK(x)     (1UL << (x))
+#define GPIO_PUD_MASK(x)        (3UL << (x*2))
+#define GPIO_DRV_MASK(x)        (3UL << (x*2))
+#define GPIO_SFN_MASK(x)	(15UL <<(x*4))
+
+#define GPIO_SFN_EN(x)		(2UL << (x*4))
+#define GPIO_OP_EN(x)		(1UL << (x*4))
+
+#define GPIO_PUD_DIS(x)		(0UL << (x*2))
+#define GPIO_PDN_EN(x)		(1UL << (x*2))
+#define GPIO_PUP_EN(x)		(3UL << (x*2))
+#define GPIO_DATA_HIGH(x)	(1UL << (x))
+#define GPIO_DATA_LOW(x)	(0UL << (x))
+
+#define GPIO_DRV_SET(strength,pin)	(strength << (pin*2))
+
+#define PIN0	(0x00)
+#define PIN1	(0x01)
+#define PIN2	(0x02)
+#define PIN3	(0x03)
+#define PIN4	(0x04)
+#define PIN5	(0x05)
+#define PIN6	(0x06)
+#define PIN7	(0x07)
+
 // 0x1140_0000
 #define GPA0	(0x00)
 #define GPA1	(0x01)
