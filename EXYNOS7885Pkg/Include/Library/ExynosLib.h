@@ -30,7 +30,7 @@
 /**
   External reference to the gExynosPkgTokenSpaceGuid GUID.
 */
-extern EFI_GUID gExynosPkgTokenSpaceGuid;
+extern EFI_GUID gEXYNOS7885PkgTokenSpaceGuid;
 
 
 UINT32
