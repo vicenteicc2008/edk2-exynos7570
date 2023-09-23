@@ -70,6 +70,8 @@
 // Define MotherBoard SYS flags offsets (from ARM_VE_BOARD_PERIPH_BASE)
 //
 
+#define DISTANCE_BTWN_PORTS	(0x20)
+
 // 0x1140_0000
 #define GPA0	(0x00)
 #define GPA1	(0x01)
