@@ -12,13 +12,13 @@ typedef enum {
 } BUTTON_STATE;
 
 typedef struct {
-  MS_BUTTON_SERVICES_PROTOCOL ButtonServicesProtocol;
+  GPIO_BUTTON_SERVICES_PROTOCOL ButtonServicesProtocol;
   BUTTON_STATE ButtonState;
 } GPIO_BUTTON_SERVICES_PROTOCOL;
 
 GPIO_BUTTON_SERVICES_PROTOCOL *gBsp = NULL;
 
-#define MS_BSP_FROM_BSP(a) \
+#define GPIO_BSP_FROM_BSP(a) \
   BASE_CR(a, GPIO_BUTTON_SERVICES_PROTOCOL, ButtonServicesProtocol)
 
 EFI_STATUS
@@ -31,7 +31,7 @@ PreBootVolumeUpButtonThenPowerButtonCheck(
 
   DEBUG((DEBUG_VERBOSE, "%a \n", __FUNCTION__));
 
-  Bsp = MS_BSP_FROM_BSP(This);
+  Bsp = GPIO_BSP_FROM_BSP(This);
   *PreBootVolumeUpButtonThenPowerButton = (Bsp->ButtonState == VolUpButton);
   return EFI_SUCCESS;
 }
@@ -52,7 +52,7 @@ PreBootClearVolumeButtonState(IN GPIO_BUTTON_SERVICES_PROTOCOL *This) {
   GPIO_BUTTON_SERVICES_PROTOCOL *Bsp;
 
   DEBUG((DEBUG_VERBOSE, "%a \n", __FUNCTION__));
-  Bsp = MS_BSP_FROM_BSP(This);
+  Bsp = GPIO_BSP_FROM_BSP(This);
   Bsp->ButtonState = NoButtons;
 
   return EFI_SUCCESS;
@@ -183,7 +183,7 @@ ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable) {
 
   // Install the protocol
   Status = gBS->InstallMultipleProtocolInterfaces(
-      &ImageHandle, &gMsButtonServicesProtocolGuid, gBsp, NULL);
+      &ImageHandle, &gButtonServicesProtocolGuid, gBsp, NULL);
 
   if (EFI_ERROR(Status)) {
     DEBUG(
