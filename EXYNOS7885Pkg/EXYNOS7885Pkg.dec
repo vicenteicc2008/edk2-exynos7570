@@ -50,3 +50,8 @@
   gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x0000a403
   gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|1080|UINT32|0x0000a404
   gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1920|UINT32|0x0000a405 
+
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart1Base|0|UINT32|0x0000000A
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart2Base|0|UINT32|0x0000000B
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart3Base|0|UINT32|0x0000000C
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart4Base|0|UINT32|0x0000000D

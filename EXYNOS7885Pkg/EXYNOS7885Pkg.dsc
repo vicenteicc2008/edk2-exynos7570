@@ -145,10 +145,10 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
-  gExynosPkgTokenSpaceGuid.PcdGpioPart1Base|0x139F0000
-  gExynosPkgTokenSpaceGuid.PcdGpioPart2Base|0x148C0000
-  gExynosPkgTokenSpaceGuid.PcdGpioPart3Base|0x139E0000
-  gExynosPkgTokenSpaceGuid.PcdGpioPart4Base|0x13750000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart1Base|0x139F0000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart2Base|0x148C0000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart3Base|0x139E0000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart4Base|0x13750000
 
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0 # /8 = column

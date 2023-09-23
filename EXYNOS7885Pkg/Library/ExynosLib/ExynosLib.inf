@@ -36,7 +36,7 @@
 [Guids]
 
 [Pcd]
-  gExynosPkgTokenSpaceGuid.PcdGpioPart1Base
-  gExynosPkgTokenSpaceGuid.PcdGpioPart2Base
-  gExynosPkgTokenSpaceGuid.PcdGpioPart3Base
-  gExynosPkgTokenSpaceGuid.PcdGpioPart4Base
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart1Base
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart2Base
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart3Base
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart4Base
