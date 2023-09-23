@@ -69,6 +69,56 @@
 
 // Define MotherBoard SYS flags offsets (from ARM_VE_BOARD_PERIPH_BASE)
 //
+
+// 0x1140_0000
+#define GPA0	(0x00)
+#define GPA1	(0x01)
+#define GPA2	(0x02)
+#define GPB0	(0x03)
+#define GPB1	(0x04)
+#define GPB2	(0x05)
+#define GPB3	(0x06)
+#define GPC0	(0x07)
+#define GPC1	(0x08)
+#define GPC2	(0x09)
+#define GPC3	(0x0A)
+#define GPD0	(0x0B)
+#define GPD1	(0x0C)
+#define GPY0	(0x0D)
+#define GPY1	(0x0E)
+#define GPY2	(0x0F)
+#define GPY3	(0x10)
+#define GPY4	(0x11)
+#define GPY5	(0x12)
+#define GPY6	(0x13)
+#define GPX0	(0x60)
+#define GPX1	(0x61)
+#define GPX2	(0x62)
+#define GPX3	(0x63)
+
+// 0x1340_0000
+#define GPE0	(0x70)
+#define GPE1	(0x71)
+#define GPF0	(0x72)
+#define GPF1	(0x73)
+#define GPG0	(0x74)
+#define GPG1	(0x75)
+#define GPG2	(0x76)
+#define GPH0	(0x77)
+#define GPH1	(0x78)
+
+// 0x10D1_0000
+#define GPV0	(0x80)
+#define GPV1	(0x81)
+// ETC5PUD
+#define GPV2	(0x83)
+#define GPV3	(0x84)
+// ETC8PUD
+#define GPV4	(0x86)
+
+// 0x0386_0000
+#define GPZ	(0x90)
+
 // Sites where the peripheral is fitted
 //
 #endif
