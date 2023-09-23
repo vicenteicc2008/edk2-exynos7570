@@ -262,6 +262,7 @@
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
+  EXYNOS7885Pkg/Drivers/GpioButtonsDxe/GpioButtonsDxe.inf
 
   #
   # Bds
