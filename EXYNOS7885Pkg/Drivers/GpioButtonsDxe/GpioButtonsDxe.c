@@ -24,7 +24,7 @@ GPIO_BUTTON_SERVICES_PROTOCOL *gBsp = NULL;
 EFI_STATUS
 EFIAPI
 PreBootVolumeUpButtonThenPowerButtonCheck(
-    IN MS_BUTTON_SERVICES_PROTOCOL *This,
+    IN GPIO_BUTTON_SERVICES_PROTOCOL *This,
     OUT BOOLEAN *PreBootVolumeUpButtonThenPowerButton
 ) {
   GPIO_BUTTON_SERVICES_PROTOCOL *Bsp;
@@ -39,7 +39,7 @@ PreBootVolumeUpButtonThenPowerButtonCheck(
 EFI_STATUS
 EFIAPI
 PreBootVolumeDownButtonThenPowerButtonCheck(
-    IN MS_BUTTON_SERVICES_PROTOCOL *This,
+    IN GPIO_BUTTON_SERVICES_PROTOCOL *This,
     OUT BOOLEAN *PreBootVolumeDownButtonThenPowerButton
 ) {
   *PreBootVolumeDownButtonThenPowerButton = FALSE;
