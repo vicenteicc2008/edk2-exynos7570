@@ -75,6 +75,7 @@
 
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
+
   # SimpleFbDxe
   FrameBufferBltLib|EXYNOS7885Pkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
 

@@ -18,5 +18,6 @@
   DebugLib
   PcdLib
   UefiBootServicesTableLib
+  UefiLib
 
 [Guids]
