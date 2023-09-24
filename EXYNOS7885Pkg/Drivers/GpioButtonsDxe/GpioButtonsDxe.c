@@ -16,14 +16,14 @@ EFI_STATUS WaitForPowerKey() {
     // Supposing you have a custom ExynosButtonsProtocol that provides access to physical buttons, including the power key.
     EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
 
-    Status = gBS->InstallMultipleProtocolInterfaces(
-        &gEfiDevicePathProtocolGuid,
+    Status = gBS->LocateProtocol(
+        &gExynosButtonsProtocolGuid,  // Replace with the GUID of your button protocol.
 		NULL,
         (VOID**)&ButtonsProtocol
     );
 
     if (EFI_ERROR(Status)) {
-        DEBUG((EFI_D_ERROR, "Failed to install Buttons interfaces: %r\n", Status));
+        DEBUG((EFI_D_ERROR, "Failed to locate the button protocol: %r\n", Status));
         return Status;
     }
 
@@ -44,6 +44,20 @@ EFI_STATUS WaitForPowerKey() {
     // Power key pressed, you can perform additional actions here if necessary.
 
     return EFI_SUCCESS;
+}
+
+Status = gBS->InstallMultipleProtocolInterfaces(
+    &ImageHandle,
+    &gExynosButtonsProtocolGuid,
+    ButtonsProtocol,
+    &gEfiDevicePathProtocolGuid,
+    DevicePath,
+    NULL
+);
+
+if (EFI_ERROR(Status)) {
+    DEBUG((EFI_D_ERROR, "Failed to install GPIO protocol: %r\n", Status));
+    return Status;
 }
 
 EFI_STATUS EFIAPI InitializeButtonsProtocol(IN EXYNOS_BUTTONS_PROTOCOL *This) {
