@@ -39,7 +39,7 @@ EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *Sy
     // Ubica el protocolo GPIO.
     EFI_GPIO_PROTOCOL *GpioProtocol;
     Status = gBS->LocateProtocol(
-        &gEfiGpioProtocolGuid,  // Reemplaza con la GUID de tu protocolo GPIO.
+        &gExynosButtonsProtocolGuid,  // Reemplaza con la GUID de tu protocolo GPIO.
         NULL,
         (VOID**)&GpioProtocol
     );
