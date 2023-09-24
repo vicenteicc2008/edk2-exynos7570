@@ -26,5 +26,6 @@
  
 [Protocols]
   gExynosButtonsProtocolGuid
+
 [Depex]  
   TRUE
