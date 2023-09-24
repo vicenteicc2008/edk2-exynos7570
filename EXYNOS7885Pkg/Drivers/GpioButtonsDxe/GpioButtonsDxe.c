@@ -17,7 +17,7 @@ EFI_STATUS WaitForPowerKey() {
     EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
 
     Status = gBS->InstallMultipleProtocolInterfaces(
-        &gExynosButtonsProtocolGuid,  // Replace with the GUID of your button protocol.
+        &ButtonsProtocol,
         &gEfiDevicePathProtocolGuid,
 		NULL,
         (VOID**)&ButtonsProtocol
