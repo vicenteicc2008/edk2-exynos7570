@@ -47,11 +47,10 @@ EFI_STATUS WaitForPowerKey() {
 }
 
 Status = gBS->InstallMultipleProtocolInterfaces(
-    &ImageHandle,
+    &gImageHandle,
     &gExynosButtonsProtocolGuid,
-    ButtonsProtocol,
     &gEfiDevicePathProtocolGuid,
-    DevicePath,
+    FileDevicePath,
     NULL
 );
 
