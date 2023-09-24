@@ -9,7 +9,7 @@
 
 EFI_STATUS WaitForPowerKey() {
     EFI_STATUS Status;
-    UINT8 *PowerKeyState;
+    UINT8 PowerKeyState;
 
     // Supongamos que tienes un protocolo personalizado ExynosButtonsProtocol
     // que proporciona acceso a los botones físicos, incluido el botón de encendido ("power key").
@@ -28,7 +28,7 @@ EFI_STATUS WaitForPowerKey() {
 
     do {
         // Leer el estado del botón de encendido ("power key").
-        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, (UINT8 *PowerKeyState));
+        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, &PowerKeyState);
 
         if (EFI_ERROR(Status)) {
             DEBUG((EFI_D_ERROR, "Error al leer el estado del botón de encendido: %r\n", Status));
