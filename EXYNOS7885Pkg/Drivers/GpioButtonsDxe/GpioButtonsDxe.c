@@ -13,7 +13,7 @@ EFI_STATUS WaitForPowerKey() {
 
     // Supongamos que tienes un protocolo personalizado ExynosButtonsProtocol
     // que proporciona acceso a los botones físicos, incluido el botón de encendido ("power key").
-    ExynosButtonsProtocol *ButtonsProtocol;
+    gExynosButtonsProtocolGuid *ButtonsProtocol;
 
     Status = gBS->LocateProtocol(
         &gExynosButtonsProtocolGuid,  // Reemplaza con la GUID de tu protocolo de botones.
