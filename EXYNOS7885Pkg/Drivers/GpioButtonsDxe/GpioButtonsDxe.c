@@ -9,11 +9,11 @@
 
 EFI_STATUS WaitForPowerKey() {
     EFI_STATUS Status;
-    BUTTON_STATE PowerKeyState;  // Cambia el tipo de datos aquí
+    BUTTON_STATE PowerKeyState;  // Cambia el tipo de datos a BUTTON_STATE
 
     // Supongamos que tienes un protocolo personalizado ExynosButtonsProtocol
     // que proporciona acceso a los botones físicos, incluido el botón de encendido ("power key").
-    EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;  // Corregir el tipo de datos aquí
+    EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
 
     Status = gBS->LocateProtocol(
         &gExynosButtonsProtocolGuid,  // Reemplaza con la GUID de tu protocolo de botones.
@@ -28,7 +28,7 @@ EFI_STATUS WaitForPowerKey() {
 
     do {
         // Leer el estado del botón de encendido ("power key").
-        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, &PowerKeyState);
+        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, &PowerKeyState);  // Cambia el tipo de datos a BUTTON_STATE*
 
         if (EFI_ERROR(Status)) {
             DEBUG((EFI_D_ERROR, "Error al leer el estado del botón de encendido: %r\n", Status));
@@ -47,11 +47,15 @@ EFI_STATUS WaitForPowerKey() {
 
 EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable) {
     EFI_STATUS Status;
-  
+    EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Crea una instancia de la estructura.
+
     DEBUG((EFI_D_INFO, "Driver de botones GPIO inicializado.\n"));
 
+    // Inicializa la instancia de EXYNOS_BUTTONS_PROTOCOL según tus necesidades.
+    // Por ejemplo, puedes inicializar campos específicos de la estructura aquí.
+
     // Configura los pines GPIO para los botones "Volumen +" y "Volumen -".
-    Status = InitializeButtonsProtocol(&gExynosButtonsProtocolGuid);
+    Status = InitializeButtonsProtocol(&ButtonsProtocolInstance);
     if (EFI_ERROR(Status)) {
         DEBUG((EFI_D_ERROR, "Error al inicializar los botones GPIO: %r\n", Status));
         return Status;
