@@ -13,7 +13,7 @@ EFI_STATUS WaitForPowerKey() {
 
     // Supongamos que tienes un protocolo personalizado ExynosButtonsProtocol
     // que proporciona acceso a los botones físicos, incluido el botón de encendido ("power key").
-    gExynosButtonsProtocolGuid *ButtonsProtocol;
+    EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;  // Corregir el tipo de datos aquí
 
     Status = gBS->LocateProtocol(
         &gExynosButtonsProtocolGuid,  // Reemplaza con la GUID de tu protocolo de botones.
@@ -46,18 +46,18 @@ EFI_STATUS WaitForPowerKey() {
 }
 
 EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable) {
-  EFI_STATUS Status;
+    EFI_STATUS Status;
   
-  DEBUG((EFI_D_INFO, "Driver de botones GPIO inicializado.\n"));
+    DEBUG((EFI_D_INFO, "Driver de botones GPIO inicializado.\n"));
 
-  // Configura los pines GPIO para los botones "Volumen +" y "Volumen -".
-  Status = InitializeButtonsProtocol(&gExynosButtonsProtocolGuid);
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Error al inicializar los botones GPIO: %r\n", Status));
-    return Status;
-  }
+    // Configura los pines GPIO para los botones "Volumen +" y "Volumen -".
+    Status = InitializeButtonsProtocol(&gExynosButtonsProtocolGuid);
+    if (EFI_ERROR(Status)) {
+        DEBUG((EFI_D_ERROR, "Error al inicializar los botones GPIO: %r\n", Status));
+        return Status;
+    }
 
-  // Resto de tu lógica de manejo de eventos de botones aquí.
+    // Resto de tu lógica de manejo de eventos de botones aquí.
 
-  return EFI_SUCCESS;
+    return EFI_SUCCESS;
 }
