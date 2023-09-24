@@ -28,7 +28,7 @@ EFI_STATUS WaitForPowerKey() {
 
     do {
         // Leer el estado del botón de encendido ("power key").
-        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, (UINT8 *)&PowerKeyState);
+        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, (UINT8 *PowerKeyState));
 
         if (EFI_ERROR(Status)) {
             DEBUG((EFI_D_ERROR, "Error al leer el estado del botón de encendido: %r\n", Status));
