@@ -16,7 +16,7 @@ EFI_STATUS WaitForPowerKey() {
     // Supposing you have a custom ExynosButtonsProtocol that provides access to physical buttons, including the power key.
     EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
 
-    Status = gBS->LocateProtocol(
+    Status = gBS->InstallMultipleProtocolInterfaces(
         &gExynosButtonsProtocolGuid,  // Replace with the GUID of your button protocol.
         &gEfiDevicePathProtocolGuid,
 		NULL,
@@ -24,7 +24,7 @@ EFI_STATUS WaitForPowerKey() {
     );
 
     if (EFI_ERROR(Status)) {
-        DEBUG((EFI_D_ERROR, "Failed to locate the button protocol: %r\n", Status));
+        DEBUG((EFI_D_ERROR, "Failed to install Buttons interfaces: %r\n", Status));
         return Status;
     }
 
