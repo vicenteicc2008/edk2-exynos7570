@@ -9,7 +9,7 @@
 
 EFI_STATUS WaitForPowerKey() {
     EFI_STATUS Status;
-    UINT8 PowerKeyState;
+    UINT8 *PowerKeyState;
 
     // Supongamos que tienes un protocolo personalizado ExynosButtonsProtocol
     // que proporciona acceso a los botones físicos, incluido el botón de encendido ("power key").
