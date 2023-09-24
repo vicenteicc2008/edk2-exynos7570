@@ -59,7 +59,7 @@ EFI_STATUS EFIAPI InitializeButtonsProtocol(IN EXYNOS_BUTTONS_PROTOCOL *This) {
 
 EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable) {
     EFI_STATUS Status;
-    EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Create an instance of the structure.
+    // EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Create an instance of the structure.
 
     DEBUG((EFI_D_INFO, "GPIO button driver initialized.\n"));
 
