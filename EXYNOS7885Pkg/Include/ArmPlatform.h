@@ -115,7 +115,7 @@
 #define GPC2	(0x09)
 #define GPC3	(0x0A)
 #define GPD0	(0x0B)
-#define GPD1	(0x0C)
+#define GPD1	(0xc0)
 #define GPY0	(0x0D)
 #define GPY1	(0x0E)
 #define GPY2	(0x0F)
