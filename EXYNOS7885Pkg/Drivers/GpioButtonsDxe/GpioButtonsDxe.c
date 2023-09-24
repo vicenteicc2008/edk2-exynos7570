@@ -2,6 +2,7 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/DebugLib.h>
+#include <Library/DevicePathLib.h>
 #include <Protocol/ExynosButtons.h>  // Supposing a custom protocol for buttons exists.
 #include <Protocol/Gpio.h>           // Include the GPIO protocol.
 
@@ -17,7 +18,8 @@ EFI_STATUS WaitForPowerKey() {
 
     Status = gBS->LocateProtocol(
         &gExynosButtonsProtocolGuid,  // Replace with the GUID of your button protocol.
-        NULL,
+        &gEfiDevicePathProtocolGuid,
+		NULL,
         (VOID**)&ButtonsProtocol
     );
 
@@ -61,7 +63,7 @@ EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *Sy
     EFI_STATUS Status;
     // EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Create an instance of the structure.
 
-    DEBUG((EFI_D_INFO, "GPIO button driver initialized.\n"));
+    DEBUG((EFI_D_INFO, "GPIOButtonsDxe initialized.\n"));
 
     // Initialize the instance of EXYNOS_BUTTONS_PROTOCOL according to your needs.
     // For example, you can initialize specific fields of the structure here.
