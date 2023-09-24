@@ -89,6 +89,6 @@ struct _EFI_GPIO_PROTOCOL {
   // Add other GPIO-related function pointers here.
 };
 
-extern EFI_GUID gEfiGpioProtocolGuid;
+extern EFI_GUID gExynosButtonsProtocolGuid;
 
 #endif // _GPIO_PROTOCOL_H_
