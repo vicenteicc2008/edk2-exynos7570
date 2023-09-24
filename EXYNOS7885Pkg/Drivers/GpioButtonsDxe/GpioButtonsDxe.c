@@ -3,104 +3,55 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
-#include <Protocol/ExynosButtons.h>  // Supposing a custom protocol for buttons exists.
-#include <Protocol/Gpio.h>           // Include the GPIO protocol.
+#include <Protocol/ExynosButtons.h>  // Suponiendo que existe un protocolo personalizado para los botones.
+#include <Protocol/Gpio.h>           // Incluye el protocolo GPIO.
 
 #define VOLUME_UP_GPIO_PIN   7
 #define VOLUME_DOWN_GPIO_PIN 3
 
-EFI_STATUS WaitForPowerKey() {
-    EFI_STATUS Status;
-    BUTTON_STATE PowerKeyState;  // Change the data type to BUTTON_STATE.
-
-    // Supposing you have a custom ExynosButtonsProtocol that provides access to physical buttons, including the power key.
-    EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
-
-    Status = gBS->LocateProtocol(
-        &gExynosButtonsProtocolGuid,  // Replace with the GUID of your button protocol.
-		NULL,
-        (VOID**)&ButtonsProtocol
-    );
-
-    if (EFI_ERROR(Status)) {
-        DEBUG((EFI_D_ERROR, "Failed to locate the button protocol: %r\n", Status));
-        return Status;
-    }
-
-    do {
-        // Read the state of the power key.
-        Status = ButtonsProtocol->ReadEnterKeyState(ButtonsProtocol, &PowerKeyState);  // Change the data type to BUTTON_STATE*.
-
-        if (EFI_ERROR(Status)) {
-            DEBUG((EFI_D_ERROR, "Error reading the power key state: %r\n", Status));
-            return Status;
-        }
-
-        // Wait for a brief period before checking again (avoid excessive detection).
-        gBS->Stall(100000);  // For example, wait for 100,000 microseconds (0.1 seconds).
-
-    } while (PowerKeyState != BUTTON_PRESSED);
-
-    // Power key pressed, you can perform additional actions here if necessary.
-
-    return EFI_SUCCESS;
-}
-
-Status = gBS->InstallMultipleProtocolInterfaces(
-    &gImageHandle,
-    &gExynosButtonsProtocolGuid,
-    &gEfiDevicePathProtocolGuid,
-    FileDevicePath,
-    NULL
-);
-
-if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Failed to install GPIO protocol: %r\n", Status));
-    return Status;
-}
-
 EFI_STATUS EFIAPI InitializeButtonsProtocol(IN EXYNOS_BUTTONS_PROTOCOL *This) {
-  // Perform button hardware initialization here if needed.
-  // Configure GPIO pins, resistors, interrupts, etc.
-  // This function is called when the button driver is loaded.
+  // Realiza la inicialización de hardware de los botones aquí si es necesario.
+  // Configura los pines GPIO, resistencias, interrupciones, etc.
+  // Esta función se llama al cargar el controlador de botones.
 
-  // For example, configure GPIO pins for the "Volume +" and "Volume -" buttons.
-  // This may include setting input directions and pull-up/down resistors.
+  // Por ejemplo, configura los pines GPIO para los botones "Volume +" y "Volume -".
+  // Esto podría incluir la configuración de direcciones de entrada y resistencias pull-up/down.
 
-  // If no additional initialization is required, simply return EFI_SUCCESS.
+  // Si no es necesario realizar ninguna inicialización adicional,
+  // simplemente devuelve EFI_SUCCESS.
   return EFI_SUCCESS;
 }
 
 EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable) {
     EFI_STATUS Status;
-    // EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Create an instance of the structure.
+    EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Crea una instancia de la estructura.
 
-    DEBUG((EFI_D_INFO, "GpioButtonsDxe initialized.\n"));
+    DEBUG((EFI_D_INFO, "Controlador de botones GPIO inicializado.\n"));
 
-    // Initialize the instance of EXYNOS_BUTTONS_PROTOCOL according to your needs.
-    // For example, you can initialize specific fields of the structure here.
+    // Inicializa la instancia de EXYNOS_BUTTONS_PROTOCOL según tus necesidades.
+    // Por ejemplo, puedes inicializar campos específicos de la estructura aquí.
 
-    // Configure GPIO pins for "Volume +" and "Volume -" buttons.
-    // Configure GPIO pins for wakeup functionality (if supported).
+    // Configura los pines GPIO para los botones "Volume +" y "Volume -".
+    // Configura los pines GPIO para la funcionalidad de activación (si es compatible).
 
-    // Assuming you have a GPIO protocol to work with GPIO pins, you can use it like this:
+    // Suponiendo que tienes un protocolo GPIO para trabajar con los pines GPIO, puedes usarlo así:
 
-    // Locate the GPIO protocol.
+    // Ubica el protocolo GPIO.
     EFI_GPIO_PROTOCOL *GpioProtocol;
     Status = gBS->LocateProtocol(
-        &gExynosButtonsProtocolGuid,  // Replace with the GUID of your GPIO protocol.
+        &gEfiGpioProtocolGuid,  // Reemplaza con la GUID de tu protocolo GPIO.
         NULL,
         (VOID**)&GpioProtocol
     );
 
     if (EFI_ERROR(Status)) {
-        DEBUG((EFI_D_ERROR, "Failed to locate the GPIO protocol: %r\n", Status));
+        DEBUG((EFI_D_ERROR, "Error al ubicar el protocolo GPIO: %r\n", Status));
         return Status;
     }
 
-    // Configure the GPIO pins for wakeup functionality.
-    // The specific GPIO pin numbers and configurations depend on your hardware.
-    // Below is an example of configuring GPIO pins for wakeup.
+    // Configura los pines GPIO para la funcionalidad de activación.
+    // Los números de pin GPIO específicos y las configuraciones dependen de tu hardware.
+    // A continuación se muestra un ejemplo de configuración de pines GPIO para la funcionalidad de activación.
     UINT32 GpioPinList[] = {VOLUME_UP_GPIO_PIN, VOLUME_DOWN_GPIO_PIN};
 
     for (UINTN i = 0; i < sizeof(GpioPinList) / sizeof(GpioPinList[0]); i++) {
@@ -113,20 +64,20 @@ EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *Sy
         );
 
         if (EFI_ERROR(Status)) {
-            DEBUG((EFI_D_ERROR, "Failed to configure GPIO pin %d: %r\n", GpioPinList[i], Status));
+            DEBUG((EFI_D_ERROR, "Error al configurar el pin GPIO %d: %r\n", GpioPinList[i], Status));
             return Status;
         }
 
-        // Enable GPIO pin wakeup (if supported by hardware).
+        // Habilita la activación por pin GPIO (si es compatible con el hardware).
         Status = GpioProtocol->SetWakeupEnable(GpioProtocol, GpioPinList[i], TRUE);
 
         if (EFI_ERROR(Status)) {
-            DEBUG((EFI_D_ERROR, "Failed to enable GPIO pin %d wakeup: %r\n", GpioPinList[i], Status));
+            DEBUG((EFI_D_ERROR, "Error al habilitar la activación por pin GPIO %d: %r\n", GpioPinList[i], Status));
             return Status;
         }
     }
 
-    // Rest of your button event handling logic here.
+    // El resto de tu lógica de manejo de eventos de botones aquí.
 
     return EFI_SUCCESS;
 }
