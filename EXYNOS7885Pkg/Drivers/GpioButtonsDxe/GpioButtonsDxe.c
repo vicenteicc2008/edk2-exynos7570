@@ -17,7 +17,6 @@ EFI_STATUS WaitForPowerKey() {
     EXYNOS_BUTTONS_PROTOCOL *ButtonsProtocol;
 
     Status = gBS->InstallMultipleProtocolInterfaces(
-        &ButtonsProtocol,
         &gEfiDevicePathProtocolGuid,
 		NULL,
         (VOID**)&ButtonsProtocol
@@ -63,7 +62,7 @@ EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *Sy
     EFI_STATUS Status;
     // EXYNOS_BUTTONS_PROTOCOL ButtonsProtocolInstance;  // Create an instance of the structure.
 
-    DEBUG((EFI_D_INFO, "GPIOButtonsDxe initialized.\n"));
+    DEBUG((EFI_D_INFO, "GpioButtonsDxe initialized.\n"));
 
     // Initialize the instance of EXYNOS_BUTTONS_PROTOCOL according to your needs.
     // For example, you can initialize specific fields of the structure here.
