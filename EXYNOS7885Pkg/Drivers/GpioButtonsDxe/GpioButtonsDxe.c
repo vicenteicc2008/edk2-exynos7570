@@ -51,7 +51,7 @@ EFI_STATUS EFIAPI ButtonsInit(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *Sy
   DEBUG((EFI_D_INFO, "Driver de botones GPIO inicializado.\n"));
 
   // Configura los pines GPIO para los botones "Volumen +" y "Volumen -".
-  Status = InitializeButtonsProtocol(&ExynosGpioProtocol);
+  Status = InitializeButtonsProtocol(&gExynosButtonsProtocolGuid);
   if (EFI_ERROR(Status)) {
     DEBUG((EFI_D_ERROR, "Error al inicializar los botones GPIO: %r\n", Status));
     return Status;
