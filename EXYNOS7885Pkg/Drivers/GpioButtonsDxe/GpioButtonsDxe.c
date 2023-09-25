@@ -6,6 +6,9 @@
 #include <Protocol/ExynosButtons.h>  // Suponiendo que existe un protocolo personalizado para los botones.
 #include <Protocol/Gpio.h>           // Incluye el protocolo GPIO.
 
+#define MAX_KEYS_TO_BUFFER   32
+#define KEYPAD_TIMER_INTERVAL 500000  //50 milli seconds
+
 EFI_INPUT_KEY  keyBuffer[MAX_KEYS_TO_BUFFER] = {0};
 EFI_INPUT_KEY* keyBufferRead;
 EFI_INPUT_KEY* keyBufferWrite;
@@ -30,9 +33,6 @@ UINT8    *pPrevButtonArray = matrixB;
 
 #define EXYNOS_KEYPAD_DEVICE_GUID \
     { 0xD7F58A0E, 0xBED2, 0x4B5A, { 0xBB, 0x43, 0x8A, 0xB2, 0x3D, 0xD0, 0xE2, 0xB0} }
-
-#define MAX_KEYS_TO_BUFFER   32
-#define KEYPAD_TIMER_INTERVAL 500000  //50 milli seconds
 
 #pragma pack(1)
 typedef struct {
