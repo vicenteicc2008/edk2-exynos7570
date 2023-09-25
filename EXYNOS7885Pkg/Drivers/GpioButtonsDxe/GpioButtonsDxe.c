@@ -6,8 +6,40 @@
 #include <Protocol/ExynosButtons.h>  // Suponiendo que existe un protocolo personalizado para los botones.
 #include <Protocol/Gpio.h>           // Incluye el protocolo GPIO.
 
+EFI_INPUT_KEY  keyBuffer[MAX_KEYS_TO_BUFFER] = {0};
+EFI_INPUT_KEY* keyBufferRead;
+EFI_INPUT_KEY* keyBufferWrite;
+
+EFI_INPUT_KEY  TimerEfiKeyBuffer[MAX_KEYS_TO_BUFFER] = {0};
+EFI_INPUT_KEY* TimerEfiKeyBufferRead;
+EFI_INPUT_KEY* TimerEfiKeyBufferWrite;
+
+
+// Number of buttons
+UINT8     numOfkeys;
+UINT8     numOfKeyRegistrations;
+
 #define VOLUME_UP_GPIO_PIN   7
 #define VOLUME_DOWN_GPIO_PIN 3
+
+#define MAX_KEYS_PRESSED_RELEASED 8
+UINT8     matrixA[MAX_KEYS_PRESSED_RELEASED];
+UINT8     matrixB[MAX_KEYS_PRESSED_RELEASED];
+UINT8    *pCurrButtonArray = matrixA;
+UINT8    *pPrevButtonArray = matrixB;
+
+#define EXYNOS_KEYPAD_DEVICE_GUID \
+    { 0xD7F58A0E, 0xBED2, 0x4B5A, { 0xBB, 0x43, 0x8A, 0xB2, 0x3D, 0xD0, 0xE2, 0xB0} }
+
+#define MAX_KEYS_TO_BUFFER   32
+#define KEYPAD_TIMER_INTERVAL 500000  //50 milli seconds
+
+#pragma pack(1)
+typedef struct {
+  VENDOR_DEVICE_PATH             VendorDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL       End;
+} EFI_KEYPAD_DEVICE_PATH;
+#pragma pack()
 
 EFI_STATUS EFIAPI InitializeButtonsProtocol(IN EXYNOS_BUTTONS_PROTOCOL *This) {
   // Realiza la inicialización de hardware de los botones aquí si es necesario.
