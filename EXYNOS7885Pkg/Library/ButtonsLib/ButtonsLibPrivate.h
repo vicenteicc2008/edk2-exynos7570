@@ -33,6 +33,7 @@ when       who     what, where, why
 
 #include <Protocol/EFIPlatformInfo.h>
 #include <Protocol/SimpleTextInEx.h>
+#include <Protocol/EFISPMI.h>
 #include <Protocol/EFITlmm.h>
 
 VOID SPMIError (
