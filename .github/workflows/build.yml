@@ -2,9 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "j2corelte" ]
+    branches: [ "addlinux" ]
   pull_request:
-    branches: [ "j2corelte" ]
+    branches: [ "addlinux" ]
 
 jobs:
   build:
