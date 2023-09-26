@@ -26,32 +26,32 @@
 
 #include "RngDxe.h"
 
-#define CLKDIV		512
-#define RNGSEL		5
+#define CLKDIV   512
+#define RNGSEL   5
 
 /**
  * Generates a pseudorandom byte stream of the specified size.
  *
  * If Output is NULL, then return FALSE.
  *
- * @param[out]  Output		Pointer to buffer to receive random value
- * @param[in]	Size		Size of random bytes to generate
+ * @param[out]  Output    Pointer to buffer to receive random value
+ * @param[in]  Size       Size of random bytes to generate
  *
- * @retval  TRUE	Pseudorandom byte stream generated successfully.
- * @retval  FALSE	Pseudorandom number generator fails to generate due to lack of entropy.
+ * @retval  EFI_SUCCESS  Pseudorandom byte stream generated successfully.
+ * @retval  EFI_NOT_READY  Pseudorandom number generator fails to generate due to lack of entropy.
  *
  **/
 EFI_STATUS
 EFIAPI
 RngDxeRandomBytes (
-  IN CONST EFI_RNG_PROTOCOL	*This,
-  OUT UINT8			*Output,
-  IN UINTN			Size
+  IN CONST EFI_RNG_PROTOCOL  *This,
+  OUT UINT8          *Output,
+  IN UINTN           Size
   )
 {
   EFI_STATUS Status = EFI_SUCCESS;
-  UINT32	TRNGBase;
-  UINT32	value, count, fifo_addr;
+  UINTN TRNGBase;
+  UINT32 value, count, fifo_addr;
 
   TRNGBase = PcdGet32(PcdCryptoBase);
 
@@ -77,16 +77,16 @@ RngDxeRandomBytes (
 
   /* Read TRNG FIFO */
   for (count = 0; count < (Size >> 2); count++) {
-	  fifo_addr = TRNG_FIFO_0 + (count << 2);
-	  value = MmioRead32(TRNGBase + fifo_addr);
-	  CopyMem((UINT8 *)((UINT32)Output + (count << 2)), &value, sizeof(value));
+    fifo_addr = TRNG_FIFO_0 + (count << 2);
+    value = MmioRead32(TRNGBase + fifo_addr);
+    CopyMem((UINT8 *)((UINTN)Output + (count << 2)), &value, sizeof(value));
   }
 
   return Status;
 }
 
 EFI_RNG_PROTOCOL gRng = {
-	RngDxeRandomBytes
+  RngDxeRandomBytes
 };
 
 /**
@@ -107,14 +107,14 @@ RngDxeInitialize (
   IN EFI_SYSTEM_TABLE   *SystemTable
   )
 {
-	EFI_STATUS Status = EFI_SUCCESS;
+  EFI_STATUS Status = EFI_SUCCESS;
 
-	Status = gBS->InstallMultipleProtocolInterfaces(
-			&ImageHandle,
-			&gSamsungPlatformRngProtocolGuid,
-			&gRng,
-			NULL
-			);
+  Status = gBS->InstallMultipleProtocolInterfaces(
+      &ImageHandle,
+      &gSamsungPlatformRngProtocolGuid,
+      &gRng,
+      NULL
+      );
 
-	return Status;
+  return Status;
 }
