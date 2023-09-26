@@ -223,27 +223,6 @@ EFI_STATUS ConvertEfiKeyCode (
 
 
 /**
-Initialize KeyMap based on the platform.
-Also initialze Power Key.
-
-@param  pNumberOfKeys            Pointer to number of keys
-@param  pKeyMap                  Pointer to key map.
-@retval EFI_SUCCESS              Initialization successful
-@retval non EFI_SUCCESS          Initialization failed
-
-**/
-
-EFI_STATUS InitializeKeyMap (
-   UINT8         *pNumberofKeys,
-   KEY_TYPE      *pKeyMap
-   )
-{
-
-   CopyMem( pKeyMap, KeyMap_8x09, NUMBER_OF_KEYS*sizeof(KEY_TYPE) );
-   *pNumberofKeys = NUMBER_OF_KEYS;
-}
-
-/**
 Initialize all button GPIOs on PMIC for input based
 on platform
 
@@ -333,18 +312,6 @@ EFI_STATUS ButtonsInit (
       DEBUG(( EFI_D_INFO | EFI_D_LOAD, "ButtonsInit: ConfigureButtonGPIOs()\r\n"));
    }
 
-   // Configure PON Debounce
-   Status = ConfigurePONDebounce();
-   if ( EFI_ERROR(Status) )
-   {
-      DEBUG(( EFI_D_ERROR, "ButtonsInit: ConfigurePONDebounce() failed, Status =  (0x%x)\r\n", Status ));
-      goto ErrorExit;
-   }
-   else 
-   {
-      DEBUG(( EFI_D_INFO | EFI_D_LOAD, "ButtonsInit: ConfigurePONDebounce()\r\n"));
-   }
-
 ErrorExit:
    return Status;
 }
@@ -432,32 +399,6 @@ EFI_STATUS PollButtonArray( UINT8 *pButtonArray )
    
 ErrorExit:
    return Status;
-}
-
-/**
-Poll power key state from PMIC.
-
-@param  pPowerKey                Pointer to power key state.
-
-@retval EFI_SUCCESS              Retrieve power key status successfully
-@retval non EFI_SUCCESS          Retrieve power key status failed
-
-**/
-EFI_STATUS PollPowerKey(BOOLEAN *pPowerKey)
-{
-  BOOLEAN PwrButtonPressed = FALSE;
-  EFI_STATUS Status = EFI_INVALID_PARAMETER;
-
-   Status = ReadRealTimeIRQStatus( PON_INT_RT_STS_REG, KPDPWR_ON_MASK, &PwrButtonPressed );
-   if ( EFI_ERROR (Status) )
-   {
-     DEBUG(( EFI_D_ERROR, "PollPowerKey: ReadRealTimeIRQStatus failed for Power Button, Status = (0x%x)\r\n", Status));
-     goto ErrorExit;
-   }
-   *pPowerKey = PwrButtonPressed;
-
-ErrorExit:
-  return Status;
 }
 
 /**
