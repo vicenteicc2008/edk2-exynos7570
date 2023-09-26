@@ -129,6 +129,8 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
 
+  INF EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
+
   #
   # Virtual Keyboard
   #
