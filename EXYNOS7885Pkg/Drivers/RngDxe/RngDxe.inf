@@ -42,7 +42,7 @@
   gSamsungPlatformRngProtocolGuid
 
 [Pcd]
-  gExynosPkgTokenSpaceGuid.PcdCryptoBase
+  gEXYNOS7885PkgTokenSpaceGuid.PcdCryptoBase
 
 [Depex]
   TRUE
