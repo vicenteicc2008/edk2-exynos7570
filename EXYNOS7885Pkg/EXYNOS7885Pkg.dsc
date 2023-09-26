@@ -37,7 +37,6 @@
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
 [LibraryClasses.common]
-  ButtonsLib|EXYNOS7885Pkg/Library/ButtonsLib/ButtonsLib.inf
   ExynosLib|EXYNOS7885Pkg/Library/ExynosLib/ExynosLib.inf
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -263,7 +262,6 @@
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
-  EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
   #
   # Bds

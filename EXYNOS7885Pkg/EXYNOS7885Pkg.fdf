@@ -127,6 +127,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # GPIO
   #
+  INF EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
 
   #
   # Virtual Keyboard
@@ -185,8 +186,6 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EXYNOS7885Pkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-
-  INF EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
 
   #
   # UEFI applications
