@@ -107,7 +107,7 @@
 [PcdsFixedAtBuild.common]
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"0.1"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"0.2-rc1"
 
   # We only boot one processor here!
   gArmPlatformTokenSpaceGuid.PcdCoreCount|1
