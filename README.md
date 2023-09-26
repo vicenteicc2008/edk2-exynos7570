@@ -1,5 +1,11 @@
 Attempt to create a minimal EDK2 for Exynos 7570 devices
 
+## Supported devices
+
+Samsung Galaxy J2 Core (j2corelte)
+
+Samsung Galaxy J4 (broken so i cant test)
+
 ## Status
 Boots to UEFI Shell.
 
@@ -180,5 +186,7 @@ SimpleFbDxe screen driver is from imbushuo's [Lumia950XLPkg](https://github.com/
 Zhuowei for making edk2-pixel3
 
 sonic011gamer for making edk2-exynos7885
+
+shivamurthyshastri for creating linaro-edk2-samsung_arndale (SamsungPlatformPkg)
 
 All the people in ``EDKII pain and misery, struggles and disappointment`` on Discord.
