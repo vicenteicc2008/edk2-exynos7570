@@ -32,7 +32,7 @@
 
 [LibraryClasses]
   UefiDriverEntryPoint
-  UncachedMemoryAllocationLib
+  MemoryAllocationLib
   DebugLib
   IoLib
 
