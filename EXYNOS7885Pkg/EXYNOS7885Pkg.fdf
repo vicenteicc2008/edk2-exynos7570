@@ -132,7 +132,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # Buttons
   #
-  INF EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+  # INF EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
 
   INF EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
