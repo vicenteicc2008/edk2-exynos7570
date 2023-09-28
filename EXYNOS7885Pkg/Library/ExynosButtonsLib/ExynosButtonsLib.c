@@ -23,11 +23,8 @@ GpioBase (
   )
 {
 
-  ASSERT( ((Port >= GPA0) && (Port <= GPY6))
-	   || ((Port >= GPX0) && (Port <= GPX3))
-	   || ((Port >= GPE0) && (Port <= GPH1))
-	   || ((Port >= GPV0) && (Port <= GPV4))
-	   || (Port == GPZ));
+  ASSERT( ((Port >= GPA0) && (Port <= GPA1))
+	   || (Port == GPA2));
 
   /*decide which part of gpio is being requested. give the corresponding base address*/
   if(Port >= 0x90) {
