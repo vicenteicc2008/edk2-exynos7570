@@ -271,7 +271,7 @@
   #
   # Buttons
   #
-  EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+  # EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
   EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
 
