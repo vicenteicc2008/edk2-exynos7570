@@ -14,7 +14,7 @@
 [Defines]
   INF_VERSION                    = 0x00010005
   BASE_NAME                      = ExynosButtonsLib
-  FILE_GUID                      = d035f5c2-1b92-4746-9f6c-5ff6202970df
+  FILE_GUID                      = a47de346-e6df-4571-9412-aaa5982f18ff
   MODULE_TYPE                    = UEFI_DRIVER
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = ExynosButtonsLib
