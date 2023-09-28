@@ -60,3 +60,6 @@
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart3Base|0|UINT32|0x0000000C
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart4Base|0|UINT32|0x0000000D
   gEXYNOS7885PkgTokenSpaceGuid.PcdCryptoBase|0|UINT32|0x00000018
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolDownPin|0|UINT32|0x00000019
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolUpPin°0|UINT32|0x00000020
+

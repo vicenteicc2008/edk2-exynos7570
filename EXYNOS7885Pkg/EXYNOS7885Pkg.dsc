@@ -149,6 +149,8 @@
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart2Base|0x148C0000
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart3Base|0x139E0000
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioPart4Base|0x13750000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolDownPin|3
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolUpPin|7
 
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0 # /8 = column
@@ -265,6 +267,12 @@
   # GPIO
   #
   EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
+
+  #
+  # Buttons
+  #
+  EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+
   EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
 
   #

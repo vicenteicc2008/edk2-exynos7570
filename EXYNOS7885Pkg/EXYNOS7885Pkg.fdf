@@ -129,6 +129,12 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EXYNOS7885Pkg/Drivers/GpioDxe/GpioDxe.inf
 
+  #
+  # Buttons
+  #
+  INF EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+
+
   INF EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
 
   #

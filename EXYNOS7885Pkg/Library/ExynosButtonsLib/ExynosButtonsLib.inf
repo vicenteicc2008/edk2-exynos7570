@@ -1,0 +1,40 @@
+#/** @file
+#
+#  Copyright (c) 2012, Samsung Electronics Co. All rights reserved.<BR>
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ExynosButtonsLib
+  FILE_GUID                      = d035f5c2-1b92-4746-9f6c-5ff6202970df
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ExynosButtonsLib
+
+[Sources.common]
+  ExynosButtonsLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  EXYNOS7885Pkg/EXYNOS7885Pkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+
+[Protocols]
+
+[Guids]
+
+[Pcd]
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolDownPin
+  gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolUpPin
