@@ -14,7 +14,7 @@
 [Defines]
   INF_VERSION                    = 0x00010005
   BASE_NAME                      = ButtonsDxe
-  FILE_GUID                      = E7D9CAE1-6930-46E3-BDF9-0027446E7DF2
+  FILE_GUID                      = E3B10A56-B02E-4BB7-9250-83DBF1AC2F82
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
 
