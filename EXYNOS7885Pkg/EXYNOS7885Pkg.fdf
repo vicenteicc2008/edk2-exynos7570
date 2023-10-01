@@ -180,7 +180,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # Internal Storage support
   #
-  MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
+  INF MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
 
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
