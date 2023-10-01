@@ -135,7 +135,6 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
-
   INF EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
 
   #
@@ -177,6 +176,11 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+
+  #
+  # Internal Storage support
+  #
+  MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
 
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
