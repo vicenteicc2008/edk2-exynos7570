@@ -194,6 +194,7 @@
   EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
+  EmbeddedPkg/SimpleTextInOutSerial/SimpleTextInOutSerial.inf
   MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
   EXYNOS7885Pkg/Drivers/ConSplitterDxe/ConSplitterDxe.inf
   EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsoleDxe.inf

@@ -111,6 +111,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # Multiple Console IO support
   #
+  INF EmbeddedPkg/SimpleTextInOutSerial/SimpleTextInOutSerial.inf
   INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
   INF EXYNOS7885Pkg/Drivers/ConSplitterDxe/ConSplitterDxe.inf
   INF EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
