@@ -251,9 +251,10 @@
   FatPkg/EnhancedFatDxe/Fat.inf
 
   #
-  # Internal Storage support
+  # Internal Storage and SD Card support
   #
   MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
+  MdeModulePkg/Bus/Sd/SdDxe/SdDxe.inf
 
   #
   # ACPI Support
