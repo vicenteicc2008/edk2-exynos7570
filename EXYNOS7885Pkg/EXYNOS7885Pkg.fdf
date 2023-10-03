@@ -164,6 +164,8 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EmbeddedPkg/Drivers/AndroidFastbootTransportUsbDxe/FastbootTransportUsbDxe.inf
 
+  INF EXYNOS7885Pkg/Drivers/UsbDxe/UsbDxe.inf
+
   #
   # Fastboot
   #

@@ -236,6 +236,7 @@
   #
   EmbeddedPkg/Drivers/AndroidFastbootTransportUsbDxe/FastbootTransportUsbDxe.inf
 
+  EXYNOS7885Pkg/Drivers/UsbDxe/UsbDxe.inf
   #
   # Fastboot
   #
