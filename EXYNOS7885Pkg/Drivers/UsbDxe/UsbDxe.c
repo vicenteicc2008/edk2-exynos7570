@@ -33,5 +33,5 @@ UsbDxeInitialize (
     DEBUG((EFI_D_ERROR, "UsbDxeInit failed: %r\n", Status));
   }
 
-  return Status;
+  return EFI_SUCCESS;
 }
