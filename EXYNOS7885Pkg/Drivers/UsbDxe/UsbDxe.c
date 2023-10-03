@@ -18,20 +18,21 @@ UsbDxeInitialize (
   // Ejemplo: Imprimir un mensaje de depuración
   DEBUG((EFI_D_INFO, "¡Hello from UsbDxe!\n"));
 
-  // Ejemplo: Agregar tus interfaces de protocolo
-  // EFI_HANDLE Handle;
-  // Status = gBS->InstallProtocolInterface (
-  //   &Handle,
-  //   &gYourProtocolGuid,
-  //   EFI_NATIVE_INTERFACE,
-  //   YourProtocolInterface
-  // );
+  Status = gBS->CreateEvent (
+                  EVT_NOTIFY_SIGNAL,
+                  TPL_CALLBACK,
+                  ReportEvents,
+                  NULL,
+                  &mEventsAvailable
+                  );
+  ASSERT_EFI_ERROR (Status);
 
-  // Comprobar errores y devolver el estado
-  if (EFI_ERROR(Status)) {
-    // Manejar casos de error
-    DEBUG((EFI_D_ERROR, "UsbDxeInit failed: %r\n", Status));
-  }
+  Handle = NULL;
+  return gBS->InstallProtocolInterface (
+    &Handle,
+    &gExynosUsbDeviceProtocolGuid,
+    EFI_NATIVE_INTERFACE,
+    &mUsbDevice
+    );
 
-  return EFI_SUCCESS;
 }

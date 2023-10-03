@@ -20,6 +20,7 @@
   UefiLib
   BaseLib
   DebugLib
+  IoLib
   DevicePathLib
   UefiBootServicesTableLib
 
@@ -28,6 +29,7 @@
 [Guids]
 
 [Protocols]
+  gExynosUsbDeviceProtocolGuid
 
 [Depex]
   TRUE
