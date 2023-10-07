@@ -28,3 +28,4 @@ EFI_STATUS ButtonsInitialize (
 
 	ErrorExit:
       return Status;
+}
