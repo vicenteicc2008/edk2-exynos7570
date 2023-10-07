@@ -7,6 +7,20 @@
 #define EXYNOS_BUTTONS_PROTOCOL_GUID \
   { 0x1ebc06b9, 0x36e6, 0x452d, { 0x94, 0xb7, 0x1e, 0xc7, 0xf1, 0xe0, 0x55, 0x97 } }
 
+// key types
+typedef enum {
+    NONE = 0,
+	  PWR,
+    VOL_UP,
+    VOL_DOWN,
+    FOCUS,
+    CAMERA,
+    ENTER,
+    HOME,
+    ROTATE_LOCK,
+    KEY_LAST
+}KEY_TYPE;
+
 typedef enum {
   BUTTON_NOT_PRESSED = 0,
   BUTTON_PRESSED
