@@ -29,10 +29,9 @@
   EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
-  IoLib
   UefiDriverEntryPoint
-  ExynosButtonsLib
   DebugLib
+  MemoryAllocationLib
 
 [Guids]
 
