@@ -201,8 +201,6 @@ READ_LOCK_STATUS   = TRUE
   INF EXYNOS7885Pkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
-  INF EXYNOS7885Pkg/Drivers/UsbDxe/UsbDxe.inf
-
   #
   # UEFI applications
   #

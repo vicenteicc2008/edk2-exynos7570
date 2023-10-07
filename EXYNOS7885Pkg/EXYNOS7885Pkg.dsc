@@ -270,8 +270,6 @@
   EXYNOS7885Pkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
-  EXYNOS7885Pkg/Drivers/UsbDxe/UsbDxe.inf
-
   #
   # GPIO
   #
