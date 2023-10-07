@@ -291,34 +291,6 @@ ErrorExit:
 }
 
 /**
-Read PON S3 reset timer value
-
-@param  pData                    Pointer to revision data
-
-@retval EFI_SUCCESS              Retrieve status successfully
-@retval non EFI_SUCCESS          Retrieve status failed
-
-**/
-EFI_STATUS ReadPONTimerS3(UINT8 *pData)
-{
-   EFI_STATUS Status = EFI_UNSUPPORTED;
-   SpmiBus_ResultType result = SPMI_BUS_SUCCESS;
-   UINT32 ReadNum = 0;
-
-   if(SPMIProtocol)
-   {
-     Status = SPMIProtocol->ReadLong(SPMIProtocol, 0, SPMI_BUS_ACCESS_PRIORITY_LOW, PON_S3_RESET_TIMER, pData, 1, &ReadNum, &result);
-     if (SPMI_BUS_SUCCESS != result)
-     {
-       SPMIError(result,Status);
-       goto ErrorExit;
-     }
-   }
-ErrorExit:
-   return Status;
-}
-
-/**
 Initialize all PMIC GPIOs as input based on platform.
 Also configure the power key
 
@@ -374,49 +346,6 @@ EFI_STATUS ButtonsInit (
 ErrorExit:
    return Status;
 }
-
-
-/**
-Read real time interrupt status on PMIC.
-
-@param  ReadReg                  SPMI register on PMIC.
-@param  pGpioButtonPressed       Pointer if GPIO activity (press) happened.
-
-@retval EFI_SUCCESS              Retrieve status successfully
-@retval non EFI_SUCCESS          Retrieve status failed
-
-**/
-EFI_STATUS ReadRealTimeIRQStatus(UINT32 ReadReg, UINT8 Mask, BOOLEAN *pGpioButtonPressed )
-{
-   EFI_STATUS Status = EFI_UNSUPPORTED;
-   SpmiBus_ResultType result = SPMI_BUS_SUCCESS;
-   UINT32 ReadNum = 0;
-   UINT8 ReadData = 0;
-
-   if(SPMIProtocol)
-   {
-     Status = SPMIProtocol->ReadLong(SPMIProtocol, 0, SPMI_BUS_ACCESS_PRIORITY_LOW, ReadReg, &ReadData, 1, &ReadNum, &result);
-     if (SPMI_BUS_SUCCESS != result)
-     {
-       SPMIError(result,Status);
-       goto ErrorExit;
-     }
-
-     if(ReadData & Mask)
-     {
-       *pGpioButtonPressed = TRUE;
-     }
-     else
-     {
-	   *pGpioButtonPressed = FALSE;
-     }
-   }
-ErrorExit:
-   return Status;
-}
-
-
-
 
 /**
 Read gpio status on PMIC.

@@ -22,18 +22,25 @@
 [Sources.common]
   ExynosButtonsLib.c
 
+[BuildOptions.AARCH64]
+  GCC:*_*_*_CC_FLAGS = -Wno-pointer-to-int-cast -Wno-overflow -Wno-return-type
+
 [Packages]
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
-  DebugLib
-  IoLib
+  BaseMemoryLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
 
 [Protocols]
 
 [Guids]
+  gSamsungTokenSpaceGuid
 
 [Pcd]
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolDownPin
