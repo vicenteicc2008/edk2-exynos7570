@@ -1,3 +1,4 @@
+// Copyright (C) 2016, Samsung Electronics. All rights reserved.<BR>
 // Copyright (C) 2023, vicenteicc2008. All rights reserved.<BR>
 
 #include <Uefi.h>
@@ -5,6 +6,7 @@
 #include <Library/DebugLib.h>
 #include <Library/UefiDriverEntryPoint.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
+#include <Library/DevicePathLib.h>
 #include <Library/MemoryAllocationLib.h>
 
 #include <Protocol/SimpleTextIn.h>
