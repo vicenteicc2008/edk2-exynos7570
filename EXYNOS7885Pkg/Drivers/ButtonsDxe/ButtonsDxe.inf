@@ -29,18 +29,16 @@
   EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
-  UefiDriverEntryPoint
-  DebugLib
-  MemoryAllocationLib
-  DevicePathLib
+  BaseMemoryLib
+  PcdLib
   UefiLib
-
-[Guids]
-
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  ButtonsLib
+ 
 [Protocols]
- gSamsungPlatformGpioButtonsProtocolGuid
+ gEfiSimpleTextInProtocolGuid
+ gEfiSimpleTextInputExProtocolGuid
 
-[Pcd]
-
-[depex]
-  TRUE
+[Depex]  
+ gEfiSimpleTextInProtocolGuid
