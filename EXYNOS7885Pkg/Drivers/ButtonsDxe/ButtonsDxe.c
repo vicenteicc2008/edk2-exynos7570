@@ -181,19 +181,217 @@ BOOLEAN RemoveAKey(
   return FALSE;
 }
 
+VOID ProcessArray( VOID )
+{
+   UINT8      difference = 0;
+   UINT8     *p;
+   UINT8     KeyIndex;
+   KEY_TYPE   key;
+
+
+   // assume no matrix change first
+   isChanged = FALSE;
+
+   for( KeyIndex = 0; KeyIndex < numOfkeys; ++KeyIndex )
+   {
+      difference = pCurrButtonArray[KeyIndex] ^ pPrevButtonArray[KeyIndex];
+
+      // If the previous and current button arrays differ in data in
+      // it means a key at that index changed state
+
+      if (difference) {
+         isChanged = TRUE;
+         // get local key code
+         key = keyMap[KeyIndex];
+
+         //  key is released
+         if(!pCurrButtonArray[KeyIndex])
+         {
+
+            // remove this key from keyPressed array if there is
+            if( RemoveAKey( keysPressed, key ))
+            {
+               numOfKeysPressed--;
+            }
+            // store this key in keyReleased array
+            if( StoreAKey( keysReleased, key ))
+            {
+               numOfKeysReleased++;
+            }
+         }
+         else
+         {
+            // key is pressed
+            if( StoreAKey( keysPressed, key ))
+            {
+               numOfKeysPressed++;
+            }
+         } // press or release
+      } // difference state
+   } // for key index loop
+
+   // swap pointers for next comparison session
+   p = pCurrButtonArray;
+   pCurrButtonArray = pPrevButtonArray;
+   pPrevButtonArray = p;
+
+   return;
+}
+
+BOOLEAN PollForKey()
+{
+  UINT8 i;
+  EFI_STATUS status;
+  EfiKeyFound = FALSE;
+
+  // get the button array
+  status = PollButtonArray( pCurrButtonArray );
+  if(status != EFI_SUCCESS)
+  {
+    DEBUG((EFI_D_ERROR, "ButtonsDxe - PollButtonKeys failed status:0x%08X\r\n",status));
+    return FALSE;
+  }
+
+  // process the matrix
+  ProcessArray();
+
+  if( isChanged == TRUE )
+  {
+    // There is matrix change detected.
+    //Translate to  EFI keys and put them into the key buffer.
+    if(ConvertEfiKeyCode( keysPressed,
+                          numOfKeysPressed,
+                          keysReleased,
+                          numOfKeysReleased,
+                          MAX_KEYS_PRESSED_RELEASED,
+                          EfiKeys,
+                          &numOfEfiKeys) == EFI_SUCCESS)
+    {
+      for( i=0; i<numOfEfiKeys; i++ )
+      {
+
+        *keyBufferWrite = EfiKeys[i];
+        keyBufferWrite++;
+        if(keyBufferWrite >= &keyBuffer[MAX_KEYS_TO_BUFFER] )
+        {
+          keyBufferWrite = &keyBuffer[0];
+        }
+
+        if(TimerRunning)
+        {
+          *TimerEfiKeyBufferWrite = EfiKeys[i];
+          TimerEfiKeyBufferWrite++;
+
+          if(TimerEfiKeyBufferWrite >= &TimerEfiKeyBuffer[MAX_KEYS_TO_BUFFER])
+          {
+             TimerEfiKeyBufferWrite = &TimerEfiKeyBuffer[0];
+          }
+        }
+        EfiKeyFound = TRUE;
+      }
+    }
+
+    //Clear the keys released.
+    SetMem(keysReleased, MAX_KEYS_PRESSED_RELEASED, NONE);
+    numOfKeysReleased = 0;
+    SetMem(EfiKeys, MAX_KEYS_PRESSED_RELEASED, NONE);
+    numOfEfiKeys = 0;
+  }
+
+  //Returns TRUE if any key was found.  FALSE if not.
+  return EfiKeyFound;
+}
+
+BOOLEAN IsKeyInBuffer()
+{
+  return (keyBufferRead != keyBufferWrite);
+}
+
+VOID EFIAPI WaitForKeyCallback (
+  IN  EFI_EVENT   Event,
+  IN  VOID        *Context
+  )
+{
+  if( PollForKey() || IsKeyInBuffer() )
+  {
+    //Notify the system that a key is pending
+    gBS->SignalEvent(Event);
+  }
+}
+
+VOID EFIAPI PollForKeyCallback (
+  IN  EFI_EVENT   Event,
+  IN  VOID        *Context
+  )
+{
+  EFI_KEY_DATA         KeyData;
+  EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL  *This = NULL;
+
+  TimerRKStroke = TRUE;
+  ( void )KeysDxeReadKeyStrokeEx( This,
+                                  &KeyData );
+  TimerRKStroke = FALSE;
+}
+
+EFI_STATUS KeysDxeResetCommon(void)
+{
+  //Reset the key device. This will reset and clear the key buffer
+  keyBufferRead = keyBufferWrite = keyBuffer;
+  numOfKeysReleased = numOfKeysPressed = 0;
+
+  TimerEfiKeyBufferRead = TimerEfiKeyBufferWrite = TimerEfiKeyBuffer;
+
+  SetMem(matrixA, MAX_KEYS_PRESSED_RELEASED*sizeof(UINT8), 0x00);
+  SetMem(matrixB, MAX_KEYS_PRESSED_RELEASED*sizeof(UINT8), 0x00);
+
+  SetMem(keysPressed,  MAX_KEYS_PRESSED_RELEASED * sizeof(KEY_TYPE), NONE);
+  SetMem(keysReleased, MAX_KEYS_PRESSED_RELEASED * sizeof(KEY_TYPE), NONE);
+  SetEfiKeyDetection(FALSE);
+  TimerRKStroke  = FALSE;
+  return EFI_SUCCESS;
+}
+
+
+
 EFI_STATUS EFIAPI ButtonsInitialize(
   IN EFI_HANDLE ImageHandle,
   IN EFI_SYSTEM_TABLE *SystemTable
 ) {
   EFI_STATUS Status = EFI_SUCCESS;
+  EFI_EVENT   WaitKeyEvt;
 
   DEBUG((EFI_D_INFO, "Welcome to ButtonsDxe\n"));
 
   // Tu código de inicialización de botones va aquí
-  
+  keyBufferRead = keyBufferWrite = keyBuffer;
+  TimerEfiKeyBufferRead = TimerEfiKeyBufferWrite = TimerEfiKeyBuffer;
+
+  Status = ButtonsInit(&numOfkeys,
+                        keyMap
+                      );
+
+  NotifyList = AllocateZeroPool(sizeof(LIST_ENTRY));
+  if ( NULL == NotifyList )
+  {
+    return EFI_OUT_OF_RESOURCES;
+  }
+  InitializeListHead ( NotifyList );
 
   if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "ButtonsDxeInitialize: Failed, Status = (0x%x)\n", Status));
+    DEBUG((EFI_D_ERROR, "ButtonsInitialize: ButtonsInit failed = (0x%x)\n", Status));
+  }
+
+  Status = gBS->CreateEvent (
+                    EVT_NOTIFY_WAIT,
+                    TPL_CALLBACK,
+                    WaitForKeyCallback,
+                    NULL,
+                    &WaitKeyEvt
+                    );
+  if (EFI_ERROR (Status))
+  {
+    DEBUG(( EFI_D_INFO, "ButtonsDxeInitialize: Create Event failed,  Status = (0x%x)\r\n", Status));
+    goto ErrorExit;
   }
 
   return Status;
