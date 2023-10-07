@@ -56,6 +56,50 @@ KEY_TYPE  keyMap[MAX_KEYS_PRESSED_RELEASED];
 // To store the NotifyEntry of each notification.
 LIST_ENTRY     *NotifyList;
 
+BOOLEAN StoreAKey(
+  KEY_TYPE *pArray,
+  KEY_TYPE key
+)
+{
+  UINT8 i;
+  for( i=0; i<MAX_KEYS_PRESSED_RELEASED; i++ )
+  {
+    if( pArray[i] == NONE )
+    {
+      pArray[i] = key;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+  Remove a local key from an array.
+
+  @param  pArray         An array pointer to which the key will be removed from.
+  @param  key            The key will be removed.
+
+  @retval TRUE           Remove successfully.
+  @retval FALSE          Remove failed.
+
+**/
+BOOLEAN RemoveAKey(
+  KEY_TYPE *pArray,
+  KEY_TYPE key
+)
+{
+  UINT8 i;
+  for( i=0; i<MAX_KEYS_PRESSED_RELEASED; i++ )
+  {
+    if( pArray[i] == key )
+    {
+      pArray[i] = NONE;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
 EFI_STATUS EFIAPI ButtonsInitialize(
   IN EFI_HANDLE ImageHandle,
   IN EFI_SYSTEM_TABLE *SystemTable
