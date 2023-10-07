@@ -34,7 +34,7 @@
   UefiLib
   UefiDriverEntryPoint
   MemoryAllocationLib
-  ButtonsLib
+  ExynosButtonsLib
  
 [Protocols]
  gEfiSimpleTextInProtocolGuid
