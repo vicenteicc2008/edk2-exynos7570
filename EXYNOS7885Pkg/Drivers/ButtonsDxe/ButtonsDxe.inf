@@ -33,6 +33,7 @@
   DebugLib
   MemoryAllocationLib
   DevicePathLib
+  UefiLib
 
 [Guids]
 
