@@ -38,7 +38,6 @@
 
 [LibraryClasses.common]
   ExynosLib|EXYNOS7885Pkg/Library/ExynosLib/ExynosLib.inf
-  ExynosButtonsLib|EXYNOS7885Pkg/Library/ExynosButtonsLib/ExynosButtonsLib.inf
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmPlatformLib|EXYNOS7885Pkg/Library/EXYNOS7885PkgLib/EXYNOS7885PkgLib.inf
@@ -107,7 +106,7 @@
 [PcdsFixedAtBuild.common]
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"0.2-rc1"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"0.2-rc2"
 
   # We only boot one processor here!
   gArmPlatformTokenSpaceGuid.PcdCoreCount|1
@@ -278,7 +277,7 @@
   #
   # Buttons
   #
-  EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
+  # EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
   EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
 

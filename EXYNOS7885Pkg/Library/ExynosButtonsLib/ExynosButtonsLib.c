@@ -263,7 +263,7 @@ EFI_STATUS ConfigureButtonGPIOs ( VOID )
    if ( EFI_ERROR (Status) )
    {
       DEBUG(( EFI_D_ERROR, "ConfigureButtonGPIOs:failed to configure VOL+ button, Status = (0x%x)\r\n", Status));
-      goto ErrorExit;
+      return Status;
    }
    else 
    {
@@ -278,15 +278,12 @@ EFI_STATUS ConfigureButtonGPIOs ( VOID )
    if ( EFI_ERROR (Status) )
    {
       DEBUG(( EFI_D_ERROR, "ConfigureButtonGPIOs:failed to configure VOL- button, Status = (0x%x)\r\n", Status));
-      goto ErrorExit;
+      return Status;
    }
    else 
    {
       DEBUG(( EFI_D_INFO | EFI_D_LOAD, "ConfigureButtonGPIOs:configured VOL- button\r\n"));
    }
-
-ErrorExit:
-   return Status;
 
 }
 
@@ -312,7 +309,7 @@ EFI_STATUS ButtonsInit (
    if ( EFI_ERROR(Status) )
    {
       DEBUG(( EFI_D_ERROR, "ButtonsInit: InitializeKeyMap() failed, Status =  (0x%x)\r\n", Status ));
-      goto ErrorExit;
+      return Status;
    }
    else 
    {
@@ -324,7 +321,7 @@ EFI_STATUS ButtonsInit (
    if ( EFI_ERROR(Status) )
    {
       DEBUG(( EFI_D_ERROR, "ButtonsInit: ConfigureButtonGPIOs() failed, Status =  (0x%x)\r\n", Status ));
-      goto ErrorExit;
+      return Status;
    }
    else 
    {
@@ -336,15 +333,12 @@ EFI_STATUS ButtonsInit (
    if ( EFI_ERROR(Status) )
    {
       DEBUG(( EFI_D_ERROR, "ButtonsInit: ConfigurePONDebounce() failed, Status =  (0x%x)\r\n", Status ));
-      goto ErrorExit;
+      return Status;
    }
    else 
    {
       DEBUG(( EFI_D_INFO | EFI_D_LOAD, "ButtonsInit: ConfigurePONDebounce()\r\n"));
    }
-
-ErrorExit:
-   return Status;
 }
 
 /**
@@ -374,8 +368,6 @@ EFI_STATUS ReadGpioStatus(UINT32 Gpio, BOOLEAN *pGpioButtonPressed )
    {
      *pGpioButtonPressed = FALSE;
    }
-
-ErrorExit:
    return Status;
 }
 
@@ -399,7 +391,7 @@ EFI_STATUS PollButtonArray( UINT8 *pButtonArray )
    if ( EFI_ERROR (Status) )
    {
      DEBUG(( EFI_D_ERROR, "PollButtonArray: PollPowerKey failed Status = (0x%x)\r\n", Status));
-     goto ErrorExit;
+     return Status;
    }
    *(pButtonArray + 0) = ButtonPressed;
 
@@ -408,7 +400,7 @@ EFI_STATUS PollButtonArray( UINT8 *pButtonArray )
    if ( EFI_ERROR (Status) )
    {
      DEBUG(( EFI_D_ERROR, "PollButtonArray: ReadGpioStatus failed for VOL+ button, Status = (0x%x)\r\n", Status));
-     goto ErrorExit;
+     return Status;
    }
    *(pButtonArray + 1) = ButtonPressed;
 
@@ -417,39 +409,11 @@ EFI_STATUS PollButtonArray( UINT8 *pButtonArray )
    if ( EFI_ERROR (Status) )
    {
      DEBUG(( EFI_D_ERROR, "PollButtonArray: ReadGpioStatus failed for VOL- button, Status = (0x%x)\r\n", Status));
-     goto ErrorExit;
+     return Status;
    }
 
    *(pButtonArray + 2) = ButtonPressed;
    
-ErrorExit:
-   return Status;
-}
-
-/**
-Poll power key state from PMIC.
-
-@param  pPowerKey                Pointer to power key state.
-
-@retval EFI_SUCCESS              Retrieve power key status successfully
-@retval non EFI_SUCCESS          Retrieve power key status failed
-
-**/
-EFI_STATUS PollPowerKey(BOOLEAN *pPowerKey)
-{
-  BOOLEAN PwrButtonPressed = FALSE;
-  EFI_STATUS Status = EFI_INVALID_PARAMETER;
-
-   Status = ReadRealTimeIRQStatus( PON_INT_RT_STS_REG, KPDPWR_ON_MASK, &PwrButtonPressed );
-   if ( EFI_ERROR (Status) )
-   {
-     DEBUG(( EFI_D_ERROR, "PollPowerKey: ReadRealTimeIRQStatus failed for Power Button, Status = (0x%x)\r\n", Status));
-     goto ErrorExit;
-   }
-   *pPowerKey = PwrButtonPressed;
-
-ErrorExit:
-  return Status;
 }
 
 /**
