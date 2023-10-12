@@ -7,7 +7,7 @@ Samsung Galaxy J2 Core (j2corelte)
 Samsung Galaxy J4 (broken so i cant test)
 
 ## Status
-Boots to UEFI Shell.
+Boots to UEFI Shell (Samsung Galaxy J2 Core)
 
 ### Building
 Tested on Ubuntu 22.04.
