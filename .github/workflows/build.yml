@@ -18,9 +18,9 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: Galaxy J4
+        name: Galaxy J2 Core
         path: ./workspace/boot.tar
     - uses: actions/upload-artifact@v3
       with:
-        name: Galaxy J4 UEFI
+        name: Galaxy J2 Core UEFI
         path: ./workspace/UEFI
