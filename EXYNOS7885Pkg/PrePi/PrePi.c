@@ -54,7 +54,7 @@ VOID Main (IN  UINT64  StartTimeStamp)
   ArmEnableBranchPrediction();
 
 void setFBcolor(char* colors) {
-    char* base = (char*)0x0ec000000ull;
+    char* base = (char*)0x067000000ull;
     for (int i = 0; i < 0x00800000; i += 4) {
         base[i] = colors[0];      // Blue component
         base[i + 1] = colors[1];  // Green component
