@@ -8,4 +8,4 @@ git clone https://github.com/tianocore/edk2 --recursive -b edk2-stable202302
 git clone https://github.com/tianocore/edk2-platforms.git
 cd "$curdir"
 ./firstrun.sh
-./build-j4lte.sh
+chmod +x build-j4lte.sh && ./build-j4lte.sh
