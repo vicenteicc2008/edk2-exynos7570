@@ -1,0 +1,26 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "j2corelte" ]
+  pull_request:
+    branches: [ "j2corelte" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: CI Build
+      run: chmod +x ci-build-j4lte.sh && ./ci-build-j4lte.sh
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Galaxy J4
+        path: ./workspace/boot.tar
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Galaxy J4 UEFI
+        path: ./workspace/UEFI
