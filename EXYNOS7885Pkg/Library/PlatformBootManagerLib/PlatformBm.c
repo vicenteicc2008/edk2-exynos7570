@@ -432,7 +432,15 @@ PlatformRegisterOptionsAndKeys (
   VOID
   )
 {
+  INTN WinPEOption;
   INTN ShellOption;
+
+
+  WinPEOption = PlatformRegisterFvBootOption(
+      &gExynos7885PkgEmbeddedRamdiskGuid, 
+      L"Windows PE Ramdisk",
+      LOAD_OPTION_ACTIVE
+  );
 
   ShellOption = PlatformRegisterFvBootOption(
       &gUefiShellFileGuid, 

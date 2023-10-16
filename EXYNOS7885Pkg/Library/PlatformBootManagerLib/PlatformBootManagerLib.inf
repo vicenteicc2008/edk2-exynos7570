@@ -80,6 +80,7 @@
   gEfiEndOfDxeEventGroupGuid
   gEfiTtyTermGuid
   gUefiShellFileGuid
+  gExynos7885PkgEmbeddedRamdiskGuid
 
 [Protocols]
   gEfiDevicePathProtocolGuid

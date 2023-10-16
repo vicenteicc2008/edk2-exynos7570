@@ -248,6 +248,8 @@
   MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
   MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   FatPkg/EnhancedFatDxe/Fat.inf
+  EXYNOS7885Pkg/Drivers/BootRamDiskHelperDxe/BootRamDiskHelperDxe.inf 
+  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
 
   #
   # ACPI Support
