@@ -30,7 +30,6 @@
 
 [Guids.common]
   gEXYNOS7885PkgTokenSpaceGuid        = { 0x99a14446, 0xaad7, 0xe460, {0xb4, 0xe5, 0x1f, 0x79, 0xaa, 0xa4, 0x93, 0xfd } }
-  gExynos7885PkgEmbeddedRamdiskGuid = { 0x650b7cd0, 0x94f8, 0x46cc, { 0x88, 0xde, 0x8c, 0x19, 0x9d, 0x41, 0xed, 0xa3} }
   gSamsungTokenSpaceGuid = { 0x59f58449, 0x99e1, 0x4a19, { 0x86, 0x65, 0x12, 0xd6, 0x37, 0xed, 0xbe, 0x5e } }
 
 [Protocols]
@@ -50,8 +49,6 @@
   # Memory allocation
   gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolBase|0|UINT64|0x00000a106
   gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolSize|0|UINT32|0x00000a107
-
-  gEXYNOS7885PkgTokenSpaceGuid.PcdInitializeRamdisk|TRUE|BOOLEAN|0x00003902
 
   # Simple FrameBuffer
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE|BOOLEAN|1
