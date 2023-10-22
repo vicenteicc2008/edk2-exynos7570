@@ -649,8 +649,6 @@ DwMmcHcDriverBindingStart (
 
   DumpCapabilityReg (0, &Private->Capability[0]);
 
-  Status = DwMmcHcCardDetect (Private->DevBase, Controller, 0, &Private->Slot[0].MediaPresent);
-
   //
   // Initialize slot and start identification process for the new attached device
   //
@@ -940,10 +938,6 @@ DwMmcPassThruPassThru (
 
   if (!Private->Slot[Slot].Enable) {
     return EFI_INVALID_PARAMETER;
-  }
-
-  if (!Private->Slot[Slot].MediaPresent) {
-    return EFI_NO_MEDIA;
   }
 
   Trb = DwMmcCreateTrb (Private, Slot, Packet, Event);
