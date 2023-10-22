@@ -802,7 +802,6 @@ SdCardSwitchBusWidth (
   @param[in] Rca            The relative device address to be assigned.
   @param[in] S18A           The boolean to show if it's a UHS-I SD card.
   @param[in] BusWidths      The bus width of the SD card.
-  @param[in] SdVersion1     The boolean to show if it's a Version 1 SD card.
 
   @retval EFI_SUCCESS       The operation is done correctly.
   @retval Others            The operation fails.
@@ -814,8 +813,7 @@ SdCardSetBusMode (
   IN EFI_SD_MMC_PASS_THRU_PROTOCOL      *PassThru,
   IN UINT16                             Rca,
   IN BOOLEAN                            S18A,
-  IN UINT32                             BusWidths,
-  IN BOOLEAN                            SdVersion1
+  IN UINT32                             BusWidths
   )
 {
   EFI_STATUS                   Status;
@@ -868,13 +866,10 @@ SdCardSetBusMode (
 
   //
   // Get the supported bus speed from SWITCH cmd return data group #1.
-  // SdVersion1 doesn't support the SWITCH cmd.
   //
-  if (!SdVersion1) {
-    Status = SdCardSwitch (PassThru, 0xF, 0xF, 0xF, 0xF, FALSE, SwitchResp);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
+  Status = SdCardSwitch (PassThru, 0xF, 0xF, 0xF, 0xF, FALSE, SwitchResp);
+  if (EFI_ERROR (Status)) {
+    return Status;
   }
   //
   // Calculate supported bus speed/bus width/clock frequency by host and device
@@ -900,14 +895,9 @@ SdCardSetBusMode (
     AccessMode = 0;
   }
 
-  //
-  // SdVersion1 doesn't support the SWITCH cmd.
-  //
-  if (!SdVersion1) {
-    Status = SdCardSwitch (PassThru, AccessMode, 0xF, 0xF, 0xF, TRUE, SwitchResp);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
+  Status = SdCardSwitch (PassThru, AccessMode, 0xF, 0xF, 0xF, TRUE, SwitchResp);
+  if (EFI_ERROR (Status)) {
+    return Status;
   }
 
   if ((SwitchResp[16] & 0xF) != AccessMode) {
@@ -951,11 +941,9 @@ SdCardIdentification (
   UINT64                         MaxCurrent;
   SD_SCR                         Scr;
   SD_CSD                         Csd;
-  BOOLEAN                        SdVersion1;
 
   DevBase    = Private->DevBase;
   PassThru = &Private->PassThru;
-  SdVersion1 = FALSE;
   //
   // 1. Send Cmd0 to the device
   //
@@ -979,7 +967,7 @@ SdCardIdentification (
       "SdCardIdentification: Executing Cmd8 fails with %r\n",
       Status
       ));
-    SdVersion1 = TRUE;
+    return Status;
   }
   //
   // 3. Send Acmd41 with voltage window 0 to the device
@@ -1099,7 +1087,7 @@ SdCardIdentification (
   DEBUG ((DEBUG_INFO, "SdCardIdentification: Found a SD device\n"));
   Private->Slot[0].CardType = SdCardType;
 
-  Status = SdCardSetBusMode (DevBase, PassThru, Rca, S18r, Scr.SdBusWidths, SdVersion1);
+  Status = SdCardSetBusMode (DevBase, PassThru, Rca, S18r, Scr.SdBusWidths);
   if (EFI_ERROR (Status)) {
     return Status;
   }

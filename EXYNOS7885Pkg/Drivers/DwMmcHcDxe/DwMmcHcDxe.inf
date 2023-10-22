@@ -60,8 +60,5 @@
   gEfiSdMmcPassThruProtocolGuid                 ## BY_START
   gPlatformDwMmcProtocolGuid
 
-[Guids]
-  gDwMmcHcNonDiscoverableDeviceGuid
-
 [UserExtensions.TianoCore."ExtraFiles"]
   DwMmcHcDxeExtra.uni

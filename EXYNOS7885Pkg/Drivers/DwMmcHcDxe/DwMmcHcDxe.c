@@ -246,7 +246,6 @@ DwMmcHcEnumerateDevice (
   DW_MMC_HC_PRIVATE_DATA              *Private;
   EFI_STATUS                          Status;
   BOOLEAN                             MediaPresent;
-  BOOLEAN                             MediaChanged;
   UINT32                              RoutineNum;
   DWMMC_CARD_TYPE_DETECT_ROUTINE      *Routine;
   UINTN                               Index;
@@ -265,10 +264,7 @@ DwMmcHcEnumerateDevice (
                0,
                &MediaPresent
                );
-
-    MediaChanged = Private->Slot[0].MediaPresent != MediaPresent;
-
-    if (MediaChanged && !MediaPresent) {
+    if ((Status == EFI_MEDIA_CHANGED) && !MediaPresent) {
       DEBUG ((
         DEBUG_INFO,
         "DwMmcHcEnumerateDevice: device disconnected at %p\n",
@@ -303,7 +299,7 @@ DwMmcHcEnumerateDevice (
             &Private->PassThru
             );
     }
-    if (MediaChanged && MediaPresent) {
+    if ((Status == EFI_MEDIA_CHANGED) && MediaPresent) {
       DEBUG ((
         DEBUG_INFO,
         "DwMmcHcEnumerateDevice: device connected at %p\n",
@@ -505,7 +501,7 @@ DwMmcHcDriverBindingSupported (
         );
 
   //
-  // Now test the EdkiiNonDiscoverableDeviceProtocol.
+  // Now test the EmbeddedNonDiscoverableIoProtocol.
   //
   Status = gBS->OpenProtocol (
                   Controller,
@@ -518,20 +514,13 @@ DwMmcHcDriverBindingSupported (
   if (EFI_ERROR (Status)) {
     return Status;
   }
-
-  if (CompareGuid (Dev->Type, &gDwMmcHcNonDiscoverableDeviceGuid)) {
-    Status = EFI_SUCCESS;
-  } else {
-    Status = EFI_UNSUPPORTED;
-  }
-
   gBS->CloseProtocol (
          Controller,
          &gEdkiiNonDiscoverableDeviceProtocolGuid,
          This->DriverBindingHandle,
          Controller
          );
-  return Status;
+  return EFI_SUCCESS;
 }
 
 /**
@@ -649,6 +638,14 @@ DwMmcHcDriverBindingStart (
 
   DumpCapabilityReg (0, &Private->Capability[0]);
 
+  MediaPresent = FALSE;
+
+  Status = Private->PlatformDwMmc->CardDetect (Controller, 0);
+  Status = DwMmcHcCardDetect (Private->DevBase, Controller, 0, &MediaPresent);
+  if (MediaPresent == FALSE) {
+    goto Done;
+  }
+
   //
   // Initialize slot and start identification process for the new attached device
   //
@@ -665,9 +662,9 @@ DwMmcHcDriverBindingStart (
     goto Done;
   }
 
-  Private->Slot[0].SlotType = Private->Capability[0].SlotType;
   Private->Slot[0].CardType = Private->Capability[0].CardType;
   Private->Slot[0].Enable = TRUE;
+  Private->Slot[0].MediaPresent = TRUE;
 
   RoutineNum = sizeof (mCardTypeDetectRoutineTable) / sizeof (DWMMC_CARD_TYPE_DETECT_ROUTINE);
   for (Index = 0; Index < RoutineNum; Index++) {
@@ -938,6 +935,10 @@ DwMmcPassThruPassThru (
 
   if (!Private->Slot[Slot].Enable) {
     return EFI_INVALID_PARAMETER;
+  }
+
+  if (!Private->Slot[Slot].MediaPresent) {
+    return EFI_NO_MEDIA;
   }
 
   Trb = DwMmcCreateTrb (Private, Slot, Packet, Event);
