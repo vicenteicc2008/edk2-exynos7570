@@ -459,6 +459,30 @@ DwMmcHcInitClockFreq (
   return Status;
 }
 
+STATIC
+EFI_STATUS
+DwMmcHcWaitReset (
+  IN UINTN DevBase,
+  IN UINT32 ResetValue
+  )
+{
+  UINT32 Timeout;
+  UINT32 Data;
+
+  MmioWrite32 (DevBase + DW_MMC_CTRL, ResetValue);
+
+  Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
+  while (Timeout--) {
+    Data = MmioRead32 (DevBase + DW_MMC_CTRL);
+    if ((Data & DW_MMC_CTRL_RESET_ALL) == 0) {
+      return EFI_SUCCESS;
+    }
+    gBS->Stall (1);
+  }
+
+  return EFI_TIMEOUT;
+}
+
 /**
   Supply SD/MMC card with maximum voltage at initialization.
 
@@ -475,36 +499,18 @@ DwMmcHcInitPowerVoltage (
   IN DW_MMC_HC_SLOT_CAP     Capability
   )
 {
-  UINT32                    Data;
-  UINT32                    Timeout;
+  EFI_STATUS                Status;
 
-  Data = 0x1;
-  MmioWrite32 (DevBase + DW_MMC_PWREN, Data);
+  MmioWrite32 (DevBase + DW_MMC_PWREN, 0x1);
 
-  Data = DW_MMC_CTRL_RESET_ALL;
-  MmioWrite32 (DevBase + DW_MMC_CTRL, Data);
-
-  Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
-  while (Timeout > 0) {
-    Data = MmioRead32 (DevBase + DW_MMC_CTRL);
-
-    if ((Data & DW_MMC_CTRL_RESET_ALL) == 0) {
-      break;
-    }
-    gBS->Stall (1);
-
-    Timeout--;
-  }
-
-  if (Timeout <= 0) {
-    DEBUG ((DEBUG_INFO,
+  Status = DwMmcHcWaitReset (DevBase, DW_MMC_CTRL_RESET_ALL);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR,
       "DwMmcHcInitPowerVoltage: reset failed due to timeout"));
-
-    return EFI_TIMEOUT;
+    return Status;
   }
 
-  Data = DW_MMC_CTRL_INT_EN;
-  MmioWrite32 (DevBase + DW_MMC_CTRL, Data);
+  MmioWrite32 (DevBase + DW_MMC_CTRL, DW_MMC_CTRL_INT_EN);
 
   return EFI_SUCCESS;
 }
@@ -571,6 +577,7 @@ DwMmcHcStartDma (
   IN DW_MMC_HC_TRB                    *Trb
   )
 {
+  EFI_STATUS                          Status;
   UINTN                               DevBase;
   UINT32                              Ctrl;
   UINT32                              Bmod;
@@ -583,25 +590,10 @@ DwMmcHcStartDma (
   //
   // Reset DMA
   //
-  Ctrl = DW_MMC_CTRL_DMA_RESET;
-  MmioWrite32 (DevBase + DW_MMC_CTRL, Ctrl);
-
-  Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
-  while (Timeout > 0) {
-    Data = MmioRead32 (DevBase + DW_MMC_CTRL);
-
-    if ((Data & DW_MMC_CTRL_DMA_RESET) == 0) {
-      break;
-    }
-    gBS->Stall (1);
-
-    Timeout--;
-  }
-
-  if (Timeout <= 0) {
+  Status = DwMmcHcWaitReset (DevBase, DW_MMC_CTRL_DMA_RESET);
+  if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Timed out waiting for CTRL_DMA_RESET"));
-
-    return EFI_TIMEOUT;
+    return Status;
   }
 
   Bmod = DW_MMC_IDMAC_SWRESET | MmioRead32 (DevBase + DW_MMC_BMOD);
@@ -842,6 +834,7 @@ TransferFifo (
   UINT32                    Index;     /* count with bytes */
   UINT32                    Ascending;
   UINT32                    Descending;
+  UINT32                    Timeout;
 
   DevBase   = Trb->Private->DevBase;
   Received = 0;
@@ -849,10 +842,12 @@ TransferFifo (
   Index = 0;
   Ascending = 0;
   Descending = ((Trb->DataLen + 3) & ~3) - 4;
+  Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
+
   do {
     Intsts = MmioRead32 (DevBase + DW_MMC_RINTSTS);
 
-    if (Trb->DataLen && (Intsts & DW_MMC_INT_TXDR) && !Trb->Read) {
+    if (!Trb->Read && (Intsts & DW_MMC_INT_TXDR)) {
       Sts = MmioRead32 (DevBase + DW_MMC_STATUS);
 
       while (!(DW_MMC_STS_FIFO_FULL(Sts))
@@ -875,19 +870,20 @@ TransferFifo (
 
         Intsts = MmioRead32 (DevBase + DW_MMC_RINTSTS);
         Sts = MmioRead32 (DevBase + DW_MMC_STATUS);
-        }
-      continue;
+      }
+      Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
+      goto Verify;
     }
 
-    if (Trb->DataLen && ((Intsts & DW_MMC_INT_RXDR) ||
-       (Intsts & DW_MMC_INT_DTO)) && Trb->Read) {
+    if (Trb->Read && ((Intsts & DW_MMC_INT_RXDR) ||
+        (Intsts & DW_MMC_INT_DTO))) {
       Sts = MmioRead32 (DevBase + DW_MMC_STATUS);
       //
       // Convert to bytes
       //
       FifoCount = GET_STS_FIFO_COUNT (Sts) << 2;
       if ((FifoCount == 0) && (Received < Trb->DataLen)) {
-        continue;
+        goto Verify;
       }
       Index = 0;
       Count = (MIN (FifoCount, Trb->DataLen) + 3) & ~3;
@@ -904,13 +900,27 @@ TransferFifo (
         Index += 4;
         Received += 4;
       } /* while */
+      Timeout = DW_MMC_HC_GENERIC_TIMEOUT;
     } /* if */
-  } while (((Intsts & DW_MMC_INT_CMD_DONE) == 0) || (Received < Trb->DataLen));
-  //
-  // Clear RINTSTS
-  //
-  Intsts = ~0;
-  MmioWrite32 (DevBase + DW_MMC_RINTSTS, Intsts);
+
+Verify:
+    if (Intsts & DW_MMC_INT_DATA_ERR) {
+      DEBUG ((DEBUG_ERROR, "%a: Data error. CmdIndex=%d, IntStatus=%p\n",
+          __func__, Trb->Packet->SdMmcCmdBlk->CommandIndex, Intsts));
+      return EFI_DEVICE_ERROR;
+    }
+
+    if (Timeout < DW_MMC_HC_GENERIC_TIMEOUT) {
+      MicroSecondDelay(1);
+    }
+
+    if (--Timeout == 0) {
+      DEBUG ((DEBUG_ERROR, "%a: Timed out. CmdIndex=%d, IntStatus=%p\n",
+          __func__, Trb->Packet->SdMmcCmdBlk->CommandIndex, Intsts));
+      return EFI_TIMEOUT;
+    }
+  } while ((Received < Trb->DataLen));
+
   return EFI_SUCCESS;
 }
 
@@ -1369,6 +1379,14 @@ DwSdExecTrb (
     }
 
     MmioWrite32 (DevBase + DW_MMC_BLKSIZ, BlkSize);
+
+    if (Trb->DataLen) {
+      Status = DwMmcHcWaitReset (DevBase, DW_MMC_CTRL_FIFO_RESET);
+      if (EFI_ERROR (Status)) {
+        DEBUG ((DEBUG_ERROR, "%a: FIFO reset timed out. CmdIndex=%d\n",
+            __func__, Packet->SdMmcCmdBlk->CommandIndex));
+      }
+    }
   }
 
   Argument = Packet->SdMmcCmdBlk->CommandArgument;
@@ -1385,48 +1403,49 @@ DwSdExecTrb (
   if (Packet->InTransferLength || Packet->OutTransferLength) {
     ErrMask |= DW_MMC_INT_DCRC;
   }
-  if (Trb->UseFifo == TRUE) {
-    Status = TransferFifo (Trb);
-    if (EFI_ERROR (Status)) {
-      return Status;
+
+  Timeout = 10000;
+  do {
+    if (--Timeout == 0) {
+      break;
     }
-  } else {
-    Timeout = 10000;
-    do {
-      if (--Timeout == 0) {
-        break;
-      }
-      IntStatus = MmioRead32 (DevBase + DW_MMC_RINTSTS);
-      if (IntStatus & ErrMask) {
-        return EFI_DEVICE_ERROR;
-      }
-      if (Trb->DataLen && ((IntStatus & DW_MMC_INT_DTO) == 0)) {
-        //
-        // Transfer not Done
-        //
-        MicroSecondDelay (10);
-        continue;
-      }
-      MicroSecondDelay (10);
-    } while (!(IntStatus & DW_MMC_INT_CMD_DONE));
-    if (Packet->InTransferLength) {
-      do {
-        Idsts = MmioRead32 (DevBase + DW_MMC_IDSTS);
-      } while ((Idsts & DW_MMC_IDSTS_RI) == 0);
-      Status = DwMmcHcStopDma (Private, Trb);
+    IntStatus = MmioRead32 (DevBase + DW_MMC_RINTSTS);
+    MicroSecondDelay (1);
+  } while (!(IntStatus & DW_MMC_INT_CMD_DONE));
+
+  if (IntStatus & ErrMask) {
+    DEBUG ((DEBUG_ERROR, "%a: Command error. CmdIndex=%d, IntStatus=%p\n",
+        __func__, Packet->SdMmcCmdBlk->CommandIndex, IntStatus));
+    return EFI_DEVICE_ERROR;
+  }
+
+  if (Trb->DataLen) {
+    if (Trb->UseFifo == TRUE) {
+      Status = TransferFifo (Trb);
       if (EFI_ERROR (Status)) {
         return Status;
       }
-    } else if (Packet->OutTransferLength) {
-      do {
-        Idsts = MmioRead32 (DevBase + DW_MMC_IDSTS);
-      } while ((Idsts & DW_MMC_IDSTS_TI) == 0);
-      Status = DwMmcHcStopDma (Private, Trb);
-      if (EFI_ERROR (Status)) {
-        return Status;
-      }
-    } /* Packet->InTransferLength */
-  } /* UseFifo */
+    } else {
+      if (Packet->InTransferLength) {
+        do {
+          Idsts = MmioRead32 (DevBase + DW_MMC_IDSTS);
+        } while ((Idsts & DW_MMC_IDSTS_RI) == 0);
+        Status = DwMmcHcStopDma (Private, Trb);
+        if (EFI_ERROR (Status)) {
+          return Status;
+        }
+      } else if (Packet->OutTransferLength) {
+        do {
+          Idsts = MmioRead32 (DevBase + DW_MMC_IDSTS);
+        } while ((Idsts & DW_MMC_IDSTS_TI) == 0);
+        Status = DwMmcHcStopDma (Private, Trb);
+        if (EFI_ERROR (Status)) {
+          return Status;
+        }
+      } /* Packet->InTransferLength */
+    } /* UseFifo */
+  } /* Trb->DataLen */
+
   switch (Packet->SdMmcCmdBlk->ResponseType) {
     case SdMmcResponseTypeR1:
     case SdMmcResponseTypeR1b:
@@ -1446,9 +1465,10 @@ DwSdExecTrb (
   }
 
   //
-  // The workaround on SD_SEND_CSD is used to be compatible with SDHC.
+  // The workaround on SD_SEND_CSD/CID is used to be compatible with SDHC.
   //
-  if (Packet->SdMmcCmdBlk->CommandIndex == SD_SEND_CSD) {
+  if (Packet->SdMmcCmdBlk->CommandIndex == SD_SEND_CSD
+      || Packet->SdMmcCmdBlk->CommandIndex == SD_SEND_CID) {
     {
       UINT32   Buf[4];
       ZeroMem (Buf, sizeof (Buf));
@@ -1519,10 +1539,42 @@ DwMmcCheckTrbResult (
   EFI_SD_MMC_PASS_THRU_COMMAND_PACKET *Packet;
   UINT32                              Idsts;
   UINTN                               DevBase;
+  UINT32                              IntStatus;
 
   DevBase = Private->DevBase;
   Packet  = Trb->Packet;
   if (Trb->UseFifo == TRUE) {
+    if (Trb->DataLen) {
+      IntStatus = MmioRead32 (DevBase + DW_MMC_RINTSTS);
+      //
+      // Check Auto CMD12 completion
+      //
+      if (!(IntStatus & DW_MMC_INT_ACD)) {
+        return EFI_NOT_READY;
+      }
+
+      //
+      // Check data trans over
+      //
+      if (!(IntStatus & DW_MMC_INT_DTO)) {
+        return EFI_NOT_READY;
+      }
+
+      //
+      // There will be some errors reported (SBE, HTO, DRT, DCRC, RCRC)
+      // depending on the command sent (read/write, single/multi block).
+      //
+      // Not sure why this happens (do we need to manually stop the command?),
+      // but it does not seem to affect operation in any way.
+      // All data is correctly transferred and the FIFO is empty by the time
+      // we reach this code path.
+      //
+      // Each transfer is validated in TransferFifo(), which would fail on any
+      // of the error states above and more.
+      // Interrupt status is cleared before a new command is issued, no need
+      // to do it here.
+      //
+    }
     return EFI_SUCCESS;
   }
   if (Packet->InTransferLength) {
