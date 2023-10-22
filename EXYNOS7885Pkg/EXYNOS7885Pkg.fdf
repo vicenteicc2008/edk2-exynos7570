@@ -169,6 +169,8 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EmbeddedPkg/Application/AndroidFastboot/AndroidFastbootApp.inf
 
+  INF EXYNOS7885Pkg/Drivers/DwMmcHcDxe/DwMmcHcDxe.inf
+
   #
   # FAT filesystem + GPT/MBR partitioning
   #

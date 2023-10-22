@@ -241,6 +241,8 @@
   EmbeddedPkg/Application/AndroidFastboot/AndroidFastbootApp.inf
 
 
+  EXYNOS7885Pkg/Drivers/DwMmcHcDxe/DwMmcHcDxe.inf
+
   #
   # FAT filesystem + GPT/MBR partitioning
   #
