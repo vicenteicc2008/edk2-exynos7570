@@ -65,3 +65,6 @@
 
 [UserExtensions.TianoCore."ExtraFiles"]
   DwMmcHcDxeExtra.uni
+
+[BuildOptions.AARCH64]
+  GCC:*_*_*_CC_FLAGS = -Wno-error=unused-function -Wno-error=unused-variable
