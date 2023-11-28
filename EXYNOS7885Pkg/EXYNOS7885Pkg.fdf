@@ -169,6 +169,9 @@ READ_LOCK_STATUS   = TRUE
   #
   INF EmbeddedPkg/Application/AndroidFastboot/AndroidFastbootApp.inf
 
+  INF MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
+  INF MdeModulePkg/Bus/Pci/SdMmcPciHcDxe/SdMmcPciHcDxe.inf
+  INF EXYNOS7885Pkg/Drivers/DwcSdhciDxe/DwcSdhciDxe.inf
   INF EXYNOS7885Pkg/Drivers/DwMmcHcDxe/DwMmcHcDxe.inf
 
   #
