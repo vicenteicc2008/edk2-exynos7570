@@ -86,6 +86,8 @@
 
   DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
 
+  DwcSdhciPlatformLib|EXYNOS7885Pkg/Library/DwcSdhciPlatformLibNull/DwcSdhciPlatformLibNull.inf
+
 [LibraryClasses.common.SEC]
   PrePiLib|EmbeddedPkg/Library/PrePiLib/PrePiLib.inf
   ExtractGuidedSectionLib|EmbeddedPkg/Library/PrePiExtractGuidedSectionLib/PrePiExtractGuidedSectionLib.inf
@@ -153,6 +155,7 @@
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolDownPin|3
   gEXYNOS7885PkgTokenSpaceGuid.PcdGpioVolUpPin|7
 
+  gSamsungTokenSpaceGuid.PcdDwcSdhciBaseAddress|0x13540000
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0 # /8 = column
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|0 #/19 = row
@@ -278,6 +281,10 @@
   # EXYNOS7885Pkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 
   EXYNOS7885Pkg/Drivers/RngDxe/RngDxe.inf
+
+  MdeModulePkg/Bus/Sd/EmmcDxe/EmmcDxe.inf
+  MdeModulePkg/Bus/Pci/SdMmcPciHcDxe/SdMmcPciHcDxe.inf
+  EXYNOS7885Pkg/Drivers/DwcSdhciDxe/DwcSdhciDxe.inf
 
   #
   # Bds
