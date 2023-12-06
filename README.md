@@ -4,7 +4,7 @@ Attempt to create a minimal EDK2 for Exynos 7570 devices
 
 Samsung Galaxy J2 Core (j2corelte)
 
-Samsung Galaxy J4 (broken so i cant test)
+Samsung Galaxy J4 (syncronous exception on GIC)
 
 ## Status
 Boots to UEFI Shell (Samsung Galaxy J2 Core)
